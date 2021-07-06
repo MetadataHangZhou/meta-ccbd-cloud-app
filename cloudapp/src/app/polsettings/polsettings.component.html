@@ -1,0 +1,45 @@
+<div *ngIf="apiResult; else nopoline">
+    <h1 class="bold" *ngIf="resourceMetadata.title">{{ resourceMetadata.title }} [{{ resourceMetadata.mms_id.value }}]</h1>
+    <section>
+        <button mat-raised-button color="primary" (click)="showConfig()">Back</button>
+        <mat-card class="example-card">
+            <mat-card-header>
+                <mat-card-title>{{'i18n.UpdatePoLine'|translate}}</mat-card-title>
+            </mat-card-header>
+            <mat-form-field class="poline-form">
+                <mat-label >{{'i18n.Currency'|translate}}</mat-label>
+                <mat-select placeholder="" class="mat-no-underline" disableOptionCentering name="currency" [(ngModel)]="poLineInfo.currency">
+                    <mat-option *ngFor="let currency of currencyCode" [value]="currency.value" [title]="currency.desc"> {{currency.value}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="poline-form">
+                <mat-label >{{'i18n.Fund'|translate}}</mat-label>
+                <mat-select placeholder="" class="mat-no-underline" disableOptionCentering  name="fund" [(ngModel)]="poLineInfo.fund">
+                    <mat-option *ngFor="let fund of funds" [value]="fund.code" [title]="fund.name"> {{fund.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="poline-form">
+                <mat-label >{{'i18n.Vendor'|translate}}</mat-label>
+                <mat-select placeholder="" class="mat-no-underline" disableOptionCentering name="vendor" [(ngModel)]="poLineInfo.vendor">
+                    <mat-option *ngFor="let vendor of vendors" [value]="vendor.code" [title]="vendor.name"> {{vendor.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <button mat-flat-button type="button" color="primary" (click)="update(apiResult)" [disabled]="(!hasApiResult || loading) && funds.length>0 && vendors.length>0">{{'i18n.Update'|translate}}</button>
+            <div class="desc">{{'i18n.UpdateDesc'|translate}}</div>
+        </mat-card>
+    </section>
+</div>
+
+<ng-template #nopoline>
+    <section>
+        <h1 class="tip">{{'i18n.NoPoLineTip'|translate}}</h1>
+        <button mat-raised-button color="primary" (click)="showConfig()">Back</button>
+    </section>
+</ng-template>
+<div class="loading-shade" *ngIf="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+</div>

@@ -1,0 +1,51 @@
+{
+   "id": "meta-ccbd-cloud-app",
+   "title": [
+      {
+         "lang": "en",
+         "text": "China Central For Bibliographic Database"
+      },
+      {
+         "lang": "zh",
+         "text": "中国中文图书数据服务中心"
+      }
+   ],
+   "subtitle": [
+      {
+         "lang": "en",
+         "text": "China Central For Bibliographic Database"
+      },
+      {
+         "lang": "zh",
+         "text": "中国中文图书数据服务中心"
+      }
+   ],
+   "author": "Metadata HangZhou Co.Ltd.",
+   "description": [
+      {
+         "lang": "en",
+         "text": ""
+      },
+      {
+         "lang": "zh",
+         "text": ""
+      }
+   ],
+   "icon": {
+      "type": "url",
+      "value": "/assets/ccbd_logo.png"
+   },
+   "fullscreen": {
+      "allow": true,
+      "open": false
+   },
+   "contentSecurity": {
+      "connectSrc": [
+         "https://api.exldevnetwork.net.cn"
+      ],
+      "sandbox": {
+         "popups": true,
+         "modals": true
+      }
+   }
+}
