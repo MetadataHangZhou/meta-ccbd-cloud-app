@@ -7,7 +7,8 @@
     </section>
 </section>
 <section >
-    <div class="chooseCNor21" style="text-align: center;display: flex;align-items: center;justify-content: center;">
+    <!--<div *ngif="hasApiResult">-->
+    <div class="chooseCNor21" style="text-align: center;display: flex;align-items: center;justify-content: center;" *ngIf="hasApiResult || loading">
         <button class="cnmarc-btn" style="flex:1;" (click)="chooseCN21()">
             <div *ngIf="!ifCNor21" style="color: red">CNMARC</div>
             <div *ngIf="ifCNor21" >CNMARC</div>
@@ -88,8 +89,13 @@
                     </mat-checkbox>
                 </section>
             </mat-card-content>
-            <button mat-raised-button color="primary" (click)="saved()" [disabled]="!hasApiResult || loading"
+            <button style="margin-right: 10px;" mat-raised-button color="primary" (click)="saved()" [disabled]="!hasApiResult || loading"
             >{{'i18n.save'|translate}}</button>
+            <button style="margin-right: 10px;" mat-raised-button color="primary" (click)="setSettings(true)"
+                    [disabled]="!hasApiResult || loading"
+            >{{'i18n.Update1'|translate}}</button>
+            <button mat-raised-button color="primary" (click)="setSettings(false)" [disabled]="!hasApiResult || loading"
+            >{{'i18n.Rebuild1'|translate}}</button>
         </mat-card>
     </form>
     <form [formGroup]="form21" *ngIf="hasApiResult && ifCNor21">
@@ -157,9 +163,19 @@
                     <!--<mat-checkbox [value]="form.value.Publishedyear" formControlName="Publishedyear">出版年</mat-checkbox>-->
                 <!--</mat-form-field>-->
             </mat-card-content>
-            <button mat-raised-button color="primary" (click)="saved()" [disabled]="!hasApiResult || loading"
+            <button style="margin-right: 10px;" mat-raised-button color="primary" (click)="saved()" [disabled]="!hasApiResult || loading"
             >{{'i18n.save'|translate}}</button>
+            <!--<div>-->
+                <button style="margin-right: 10px" mat-raised-button color="primary" (click)="setSettings(true)"
+                        [disabled]="!hasApiResult || loading"
+                >{{'i18n.Update1'|translate}}</button>
+                <button mat-raised-button color="primary" (click)="setSettings(false)" [disabled]="!hasApiResult || loading"
+                >{{'i18n.Rebuild1'|translate}}</button>
+            <!--</div>-->
         </mat-card>
     </form>
+    <div *ngIf="!hasApiResult || loading">
+        <h1 class="tip">{{'i18n.NoPoLineTip'|translate}}</h1>
+    </div>
 </section>
 

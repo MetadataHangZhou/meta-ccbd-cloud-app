@@ -12,6 +12,8 @@
     "CallNumberSubfield": "索书号子字段",
     "Rebuild": "生成BID",
     "Update": "创建POL",
+    "Rebuild1": "重新生成",
+    "Update1": "新建",
     "rebuildorupdateerrortip":"无此馆藏字段，请先重新生成！",
     "errorupdate": "更新数据失败",
     "successupdate": "更新数据成功",
@@ -34,7 +36,7 @@
     "errorconfigtip": "请先配置各项参数",
     "call-nosub": "分类字段/子字段",
     "Publishedyear": "索书号含出版年",
-
+    "NoCNATip": "请打开一条编目数据",
     "IllegalParameter": "非法参数",
     "NotAllowUpdate": "已接收的订单行不允许修改",
     "NoPoLineTip": "请导航到订单行",

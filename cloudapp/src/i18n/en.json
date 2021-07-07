@@ -12,6 +12,8 @@
     "CallNumberSubfield": "Call-no subfield",
     "Rebuild": "Update BID",
     "Update": "Create POL",
+    "Rebuild1": "Rebuild",
+    "Update1": "Create",
     "rebuildorupdateerrortip":"This Holding field is not available, please rebuild it !",
     "errorupdate": "Failed to update data",
     "successupdate": "Success to update data",
@@ -33,6 +35,18 @@
     "digits": "digits",
     "errorconfigtip": "Please configure the parameters first",
     "call-nosub": "Classification field/sub-field",
-    "Publishedyear": "Pub. Year included in the call-no.  "
+    "Publishedyear": "Pub. Year included in the call-no.  ",
+    "NoCNATip": "Please open catalogue data",
+    "IllegalParameter": "illegal parameter",
+    "NotAllowUpdate": "not allow update received poline",
+    "NoPoLineTip": "Please navigate to a POLINE record.",
+    "Updatepol": "Update",
+    "UpdateDesc": "POL Post Correction will create new POL,and then cancel the current POL.",
+    "UpdatePoLine": "Update POLINE",
+    "Currency": "Currency",
+    "Vendor": "Vendor",
+    "Fund": "Fund",
+    "UpdateSuccess": "Update success，create new POL [ {{number}} ]!",
+    "UpdateConfirm": "Do you want to cancel Current POLINE,and create a new POLine?"
   }
 }

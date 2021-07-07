@@ -23,8 +23,8 @@ export class MainComponent implements OnInit, OnDestroy {
   selectedEntity: Entity;
   apiResult: any;
 
-  entities$: Observable<Entity[]> = this.eventsService.entities$
-  .pipe(tap(() => this.clear()))
+  // entities$: Observable<Entity[]> = this.eventsService.entities$
+  // .pipe(tap(() => this.clear()))
 
   constructor(
     private restService: CloudAppRestService,
@@ -45,103 +45,129 @@ export class MainComponent implements OnInit, OnDestroy {
     //         console.log( 'onresize:222')
     //     }
     // }
+    this.getCCKBbooklist()
   }
 
   ngOnDestroy(): void {
 
   }
 
-  entitySelected(event: MatRadioChange) {
-    const value = event.value as Entity;
-    this.loading = true;
-    this.restService.call<any>(value.link)
-    .pipe(finalize(()=>this.loading=false))
-    .subscribe(
-      result => this.apiResult = result,
-      error => this.alert.error('Failed to retrieve entity: ' + error.message)
-    );
-  }
+  // entitySelected(event: MatRadioChange) {
+  //   const value = event.value as Entity;
+  //   this.loading = true;
+  //   this.restService.call<any>(value.link)
+  //   .pipe(finalize(()=>this.loading=false))
+  //   .subscribe(
+  //     result => this.apiResult = result,
+  //     error => this.alert.error('Failed to retrieve entity: ' + error.message)
+  //   );
+  // }
+  //
+  // clear() {
+  //   this.apiResult = null;
+  //   this.selectedEntity = null;
+  //
+  //   // this.fetch_z311('0').then((res: any) => {
+  //   //   console.log(res)
+  //   // })
+  // }
+  //
+  // update(value: any) {
+  //   const requestBody = this.tryParseJson(value)
+  //   if (!requestBody) return this.alert.error('Failed to parse json');
+  //
+  //   this.loading = true;
+  //   let request: Request = {
+  //     url: this.selectedEntity.link,
+  //     method: HttpMethod.PUT,
+  //     requestBody
+  //   };
+  //   this.restService.call(request)
+  //   .pipe(finalize(()=>this.loading=false))
+  //   .subscribe({
+  //     next: result => {
+  //       this.apiResult = result;
+  //       this.eventsService.refreshPage().subscribe(
+  //         ()=>this.alert.success('Success!')
+  //       );
+  //     },
+  //     error: (e: RestErrorResponse) => {
+  //       this.alert.error('Failed to update data: ' + e.message);
+  //       console.error(e);
+  //     }
+  //   });
+  // }
+  //
+  // private tryParseJson(value: any) {
+  //   try {
+  //     return JSON.parse(value);
+  //   } catch (e) {
+  //     console.error(e);
+  //   }
+  //   return undefined;
+  // }
+  //
+  // fetch_z311(key: string) {
+  //   return new Promise((resolve, reject) => {
+  //     this.eventsService.getAuthToken().subscribe(
+  //         data => {
+  //           // this.http.get("http://cckb.lib.tsinghua.edu.cn/cckbapi/selectBookinfo/json", {
+  //           //   headers: {
+  //           //     'X-Proxy-Host': 'http://aleph20.exlibris.com.cn:8992',
+  //           //     'Authorization': 'Bearer ' + data
+  //           //   }
+  //           // }).subscribe(function (data) {
+  //           //   this.loading = false;
+  //           //   resolve(data)
+  //           // }, error => {
+  //           //   this.loading = false;
+  //           //   // this.alert.error();
+  //           //   reject(error)
+  //           // })
+  //           var json = {"apikey":"562930543E3E090957C595704CF28BE4"};
+  //           this.http.post("http://cckb.lib.tsinghua.edu.cn/cckbapi/selectBookinfo/json",json,{
+  //               headers: {
+  //                 'X-Proxy-Host': 'http://aleph20.exlibris.com.cn:8992',
+  //                 'Authorization': 'Bearer ' + data
+  //               }
+  //           }).subscribe(function (data){
+  //             resolve(data)
+  //           },error =>  {
+  //             resolve(error)
+  //           })
+  //         }
+  //     );
+  //
+  //
+  //     // resolve({seq: Math.ceil(Math.random() * 99)})
+  //   })
+  //
+  // }
 
-  clear() {
-    this.apiResult = null;
-    this.selectedEntity = null;
 
-    // this.fetch_z311('0').then((res: any) => {
-    //   console.log(res)
-    // })
-  }
 
-  update(value: any) {
-    const requestBody = this.tryParseJson(value)
-    if (!requestBody) return this.alert.error('Failed to parse json');
 
-    this.loading = true;
-    let request: Request = {
-      url: this.selectedEntity.link,
-      method: HttpMethod.PUT,
-      requestBody
-    };
-    this.restService.call(request)
-    .pipe(finalize(()=>this.loading=false))
-    .subscribe({
-      next: result => {
-        this.apiResult = result;
-        this.eventsService.refreshPage().subscribe(
-          ()=>this.alert.success('Success!')
+  getCCKBbooklist(){
+        this.eventsService.getAuthToken().subscribe(
+            data => {
+              var json = {"apikey":"56DA5ACAA4F823844EC62233EC029293"};
+              this.http.post("http://cckb.lib.tsinghua.edu.cn/cckbapi/almaBooklist",json,{
+                  headers: {
+                    'X-Proxy-Host': 'http://aleph20.exlibris.com.cn:8992',
+                    'Authorization': 'Bearer ' + data
+                  }
+              }).subscribe(function (data){
+                console.log(data)
+              },error =>  {
+                console.log(data)
+              })
+            }
         );
-      },
-      error: (e: RestErrorResponse) => {
-        this.alert.error('Failed to update data: ' + e.message);
-        console.error(e);
-      }
-    });
+
+
   }
 
-  private tryParseJson(value: any) {
-    try {
-      return JSON.parse(value);
-    } catch (e) {
-      console.error(e);
-    }
-    return undefined;
-  }
 
-  fetch_z311(key: string) {
-    return new Promise((resolve, reject) => {
-      this.eventsService.getAuthToken().subscribe(
-          data => {
-            // this.http.get("http://cckb.lib.tsinghua.edu.cn/cckbapi/selectBookinfo/json", {
-            //   headers: {
-            //     'X-Proxy-Host': 'http://aleph20.exlibris.com.cn:8992',
-            //     'Authorization': 'Bearer ' + data
-            //   }
-            // }).subscribe(function (data) {
-            //   this.loading = false;
-            //   resolve(data)
-            // }, error => {
-            //   this.loading = false;
-            //   // this.alert.error();
-            //   reject(error)
-            // })
-            var json = {"apikey":"562930543E3E090957C595704CF28BE4"};
-            this.http.post("http://cckb.lib.tsinghua.edu.cn/cckbapi/selectBookinfo/json",json,{
-                headers: {
-                  'X-Proxy-Host': 'http://aleph20.exlibris.com.cn:8992',
-                  'Authorization': 'Bearer ' + data
-                }
-            }).subscribe(function (data){
-              resolve(data)
-            },error =>  {
-              resolve(error)
-            })
-          }
-      );
-
-
-      // resolve({seq: Math.ceil(Math.random() * 99)})
-    })
-
-  }
 
 
   setSettings(value: any) {

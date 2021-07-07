@@ -36,7 +36,7 @@ interface Vendor {
 }
 
 @Component({
-    selector: 'app-main',
+    selector: 'app-polsettings',
     templateUrl: './polsettings.component.html',
     styleUrls: ['./polsettings.component.scss']
 })
