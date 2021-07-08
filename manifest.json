@@ -24,11 +24,11 @@
    "description": [
       {
          "lang": "en",
-         "text": ""
+         "text": "CCBD(China Center for Bibliographic Database  https://cckb.lib.tsinghua.edu.cn/) collects the book catalogs published in China since 2000, and maintains a daily update of 600-800 new book catalogs. It mainly serves the current ALMA users and realizes the following specific functions: 1. According to the book records, match the book details in CCBD, display the cover, catalog, introduction, catalog introduction, MARC; 2. A PO-line can be created directly according to the book information; 3. Provide foreign ALMA users with the service of download bibliographic records in MARC21 format."
       },
       {
          "lang": "zh",
-         "text": ""
+         "text": "CCBD(中国书目数据库中心https://cckb.lib.tsinghua.edu.cn/)收集2000年以来中国出版的书目，每天更新600-800种新书目。主要服务于现有的ALMA用户，具体实现如下功能:1。根据图书记录，匹配CCBD中的图书细节，展示封面、目录、简介、目录介绍、MARC;2. 可以根据图书信息直接创建po线;3.为国外ALMA用户提供MARC21格式的书目记录下载服务。"
       }
    ],
    "icon": {
