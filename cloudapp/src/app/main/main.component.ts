@@ -148,22 +148,40 @@ export class MainComponent implements OnInit, OnDestroy {
 
 
   getCCKBbooklist(){
-        this.eventsService.getAuthToken().subscribe(
-            data => {
-              var json = {"apikey":"56DA5ACAA4F823844EC62233EC029293"};
-              this.http.post("http://cckb.lib.tsinghua.edu.cn/cckbapi/almaBooklist",json,{
-                  headers: {
-                    'X-Proxy-Host': 'http://aleph20.exlibris.com.cn:8992',
-                    'Authorization': 'Bearer ' + data
-                  }
-              }).subscribe(function (data){
-                console.log(data)
-              },error =>  {
-                console.log(data)
-              })
-            }
-        );
+        // this.eventsService.getAuthToken().subscribe(
+        //     data => {
+        //       var json = {"apikey":"56DA5ACAA4F823844EC62233EC029293"};
+        //       this.http.get("https://api.exldevnetwork.net.cn"+"/cckbapi/almaBooklist",json,{
+        //           headers: {
+        //             'X-Proxy-Host': 'http://aleph20.exlibris.com.cn:8992',
+        //             'Authorization': 'Bearer ' + data
+        //           }
+        //       }).subscribe(function (data){
+        //         console.log(data)
+        //       },error =>  {
+        //         console.log(data)
+        //       })
+        //     }
+        // );
 
+      this.eventsService.getAuthToken().subscribe(
+          data => {
+              var json = {"apikey":"562930543E3E090957C595704CF28BE4"};
+              this.http.post("https://api.exldevnetwork.net.cn" + "/cckbapi/almaBooklist",json, {
+                  headers: {
+                      'X-Proxy-Host': 'http://aleph20.exlibris.com.cn:8992',
+                      'Authorization': 'Bearer ' + data
+                  }
+              }).subscribe(function (data) {
+                  // this.loading = false;
+                  // resolve(data)
+              }, error => {
+                  // this.loading = false;
+                  // this.alert.error(this.translate.instant('i18n.error', {url: "https://api.exldevnetwork.net.cn" + lookupUrl.replace("KEY", key)}), {autoClose: true, delay: 3000});
+                  // reject(error)
+              })
+          }
+      );
 
   }
 
