@@ -12,13 +12,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { MainComponent } from './main/main.component';
 import { CnaSettingsComponent } from './cnasettings/cnasettings.component';
 import { PolSettingsComponent } from "./polsettings/polsettings.component";
+import { BookdetailComponent } from "./bookdetail/bookdetail.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     MainComponent,
     CnaSettingsComponent,
-    PolSettingsComponent
+    PolSettingsComponent,
+    BookdetailComponent
   ],
   imports: [
     MaterialModule,
