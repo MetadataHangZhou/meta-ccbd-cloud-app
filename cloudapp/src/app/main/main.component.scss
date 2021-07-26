@@ -30,6 +30,42 @@ textarea {
   font-size: 0.9em;
 }
 
+.booklist{
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  margin-top: 20px;
+}
 
+.item-info{
+  margin-top: 22px;
+  display: flex;
+  align-items: center;
+  flex: 0 0 50%;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  .cover{
+    margin-top: 20px;
+    justify-content: center;
+    width: 138px;
+    height: 138px;
+  }
+}
+
+.imgbox{
+  display: flex;
+  justify-content: center;
+  width: 138px;
+  height: 184px;
+  border: 1px solid #E6E6E6;
+}
+
+.booktitle{
+  padding: 10px;
+}
+
+.author{
+  padding: 10px;
+}
 
 
