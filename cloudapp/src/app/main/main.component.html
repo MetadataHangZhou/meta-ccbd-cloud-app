@@ -4,39 +4,21 @@
       {{'i18n.tip'|translate}}
     </h1>
   </section>
-
-  <div class="small-box-content" >
-    <div class="search-box" style="display: flex;align-items: center;">
-      <input matInput placeholder="输入ISBN"  [(ngModel)]="values" style="height: 30px;width: 300px">
-      <button mat-raised-button (click)="search()" color="primary" style="margin-left: 10px">检索</button>
-    </div>
-    <div class="booklist">
-      <div class="item-info" *ngFor="let hero of almaBooklist" (click)="toDetails(hero.cckbid)">
-        <div class="imgbox">
-          <img class="cover" [src]="hero.picfile" alt=""  (error)="imgerror($event)"/>
-        </div>
-        <div class="booktitle">{{hero.booktitle}}</div>
-        <div class="author">{{hero.author}}</div>
-      </div>
-    </div>
+  <div class="list-box">
 
   </div>
-  <!--<div class="large-box-content">-->
-    <!--bbbb-->
-  <!--</div>-->
-  <!--<div class="loading-shade" *ngIf="loading">-->
-    <!--<mat-spinner diameter="50"></mat-spinner>-->
-  <!--</div>-->
 
 </ng-container>
 
-<!--<section>-->
-  <!--<button style="margin-right: 10px" mat-raised-button color="primary" (click)="setSettings(true)"-->
-  <!--&gt;{{'i18n.Update'|translate}}</button>-->
-  <!--&lt;!&ndash;[disabled]="!hasApiResult || loading"   [disabled]="!hasApiResult || loading"&ndash;&gt;-->
-  <!--<button mat-raised-button color="primary" (click)="setSettings(false)"-->
-  <!--&gt;{{'i18n.Rebuild'|translate}}</button>-->
-<!--</section>-->
+<section>
+  <button style="margin-right: 10px" mat-raised-button color="primary" (click)="setSettings(true)"
+  >{{'i18n.Update'|translate}}</button>
+  <!--[disabled]="!hasApiResult || loading"   [disabled]="!hasApiResult || loading"-->
+  <button mat-raised-button color="primary" (click)="setSettings(false)"
+  >{{'i18n.Rebuild'|translate}}</button>
+</section>
 
-
+<div class="loading-shade" *ngIf="loading">
+  <mat-spinner diameter="50"></mat-spinner>
+</div>
 
