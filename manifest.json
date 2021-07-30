@@ -43,6 +43,9 @@
       "connectSrc": [
          "https://api.exldevnetwork.net.cn"
       ],
+      "frameSrc": [
+         "https://cckb.lib.tsinghua.edu.cn"
+      ],
       "sandbox": {
          "popups": true,
          "modals": true

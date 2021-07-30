@@ -10,7 +10,7 @@
     "ClassificationNumberSubfield": "分类号子字段",
     "SubfieldOfSpeciesNumber": "种次号子字段",
     "CallNumberSubfield": "索书号子字段",
-    "Rebuild": "生成BID",
+    "Rebuild": "更新BID",
     "Update": "创建POL",
     "Rebuild1": "重新生成",
     "Update1": "新建",
@@ -47,6 +47,26 @@
     "Vendor": "书商",
     "Fund": "经费",
     "UpdateSuccess": "更新成功，已生成新的订单行POL [{{number}}]!",
-    "UpdateConfirm": "是否要关闭当前订单行,并创建新的订单行?"
+    "UpdateConfirm": "是否要关闭当前订单行,并创建新的订单行?",
+
+    "maintip1": "浏览到一条书目记录显示详情",
+    "maintip2": "关键词检索",
+    "maintip3": "扩展窗口浏览更多",
+    "all": "全部",
+    "publish": "出版社",
+    "booktitle": "题名",
+    "author": "作者",
+    "bookdetails": "图书详情",
+    "back":"返回",
+    "publishyear": "出版时间",
+    "classnum": "中图分类号",
+    "abstract": "简介",
+    "directory": "目录",
+    "authors": "作者简介",
+    "buyinfo":"如需采购纸本图书，请尝试以下方式",
+    "previouspage": "上一页",
+    "nextpage": "下一页",
+    "searchbt": "检索",
+    "buybt": "采购信息"
   }
 }

@@ -1,6 +1,6 @@
 import {Observable, Subscription} from 'rxjs';
 import {finalize, switchMap, tap} from 'rxjs/operators';
-import {Component, OnInit, OnDestroy, NgModule,ChangeDetectorRef} from '@angular/core';
+import {Component, OnInit, OnDestroy, NgModule, ChangeDetectorRef, OnChanges, SimpleChanges} from '@angular/core';
 import {HttpClientModule, HttpClient, HttpHeaders} from '@angular/common/http'
 import {
     CloudAppRestService, CloudAppEventsService, Request, HttpMethod,
@@ -24,13 +24,22 @@ export class MainComponent implements OnInit, OnDestroy {
     private pageLoad$: Subscription;
     pageEntities: Entity[];
     private _apiResult: any;
-
-    private loading = false;
-    private values:String = '';
-    private _almaBooklist:any;
-    private apikey= "562930543E3E090957C595704CF28BE4";
-    private libcode= "233030";
-    private img = "https://api.exldevnetwork.net.cn/proxy/proxy/C/35043/4299354-fm.jpg!cckb_b"
+    hasApiResult: boolean = false;
+    private types: String = 'all';
+    private booktypes = '';
+    private loading = true;
+    private values: String = '';
+    private almaList: any;
+    private _almaBooklist: any;
+    private boxSize = false;
+    private _almabooktypes: any;
+    private publish = '';
+    private publishyear = '';
+    private isbn = '';
+    private pagenum = 1;
+    private pagesize = 16;
+    private apikey = "562930543E3E090957C595704CF28BE4";
+    private libcode = "233030";
 
     constructor(
         private restService: CloudAppRestService,
@@ -45,19 +54,27 @@ export class MainComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.eventsService.getInitData().subscribe(data=> {
+            this.libcode = data.instCode
+        });
         //检测窗口大小
-        // window.onresize = ()=>{
-        //     if(window.innerWidth > 450){
-        //         console.log( 'onresize:11')
-        //     }else{
-        //         console.log( 'onresize:222')
-        //     }
-        // }
+        window.onresize = () => {
+            if (window.innerWidth > 450) {
+                this.boxSize = true;
+                this.pagenum = 1
+            } else {
+                this.pagenum = 1
+                this.boxSize = false;
+            }
+        }
         this.pageLoad$ = this.eventsService.onPageLoad(this.onPageLoad);
-        this.getCCKBbooklist(this.values).then((res: any) => {
-            let results = res.datalist;
+        this.getCCKBbooklist('').then((res: any) => {
+            this.loading = false;
+            // let results = res.datalist;
+            let results = res
             this.almaBooklist = results
-            let list = results || [];
+            // this.almaList = results.datalist
+            // let list = results || [];
             // list.forEach((item, index) => {
             //     let img = item.picfile.replace('http://cckb.lib.tsinghua.edu.cn',"https://api.exldevnetwork.net.cn/proxy")
             //     item['imgs'] = img;
@@ -68,6 +85,10 @@ export class MainComponent implements OnInit, OnDestroy {
             // });
 
         })
+        this.getAlmaBooktype().then((res: any) => {
+            let result = res
+            this.almabooktypes = result.almalist
+        })
     }
 
     ngOnDestroy(): void {
@@ -76,47 +97,59 @@ export class MainComponent implements OnInit, OnDestroy {
 
     onPageLoad = (pageInfo: PageInfo) => {
         this.pageEntities = pageInfo.entities;
-        // if ((pageInfo.entities || []).length == 1) {
-        //     const entity = pageInfo.entities[0];
-        //     if (entity.type === EntityType.BIB_MMS) {
-        //         this.restService.call(entity.link).subscribe(result => {
-        //             this._apiResult = result
-        //             this.parseRes(this._apiResult)
-        //         });
-        //     }
-        //
-        // } else {
-        //     this._apiResult = {};
-        // }
+        if ((pageInfo.entities || []).length == 1) {
+            const entity = pageInfo.entities[0];
+            if (entity.type === EntityType.BIB_MMS) {
+                this.restService.call(entity.link).subscribe(result => {
+                    this._apiResult = result
+                    this.parseRes(this._apiResult)
+                });
+
+            }
+
+        } else {
+            this._apiResult = {};
+        }
     }
 
-    parseRes(value:any){
+    parseRes(value: any) {
         //parse api for page
         let anies = value.anies[0]
-        // const doc = new DOMParser().parseFromString(anies, "application/xml");
-        // let field100='';
-        // // console.log(doc)
-        // //extract the data in field "ldr"
-        // let fieldldr = doc.getElementsByTagName("leader")[0].innerHTML
-        // // console.log(fieldldr.substring(7,8))
-        //
-        // //extract the data in field "100"
-        // Array.from(doc.getElementsByTagName("datafield")).forEach(datafield =>{
-        //     if(datafield.getAttribute("tag") == '100'){
-        //         Array.from(datafield.getElementsByTagName("subfield")).forEach(subfield => {
-        //             if ('a' == subfield.getAttribute("code")) {
-        //                 field100 = subfield.textContent
-        //             }
-        //         });
-        //
-        //     }
-        // })
+        const doc = new DOMParser().parseFromString(anies, "application/xml");
+        Array.from(doc.getElementsByTagName("datafield")).forEach(datafield => {
+            if (datafield.getAttribute("tag") == '010') {
+                Array.from(datafield.getElementsByTagName("subfield")).forEach(subfield => {
+                    if ('a' == subfield.getAttribute("code")) {
+                        let isbnKeyWord = subfield.textContent.replace(/-/g, "");
+                        this.isbn = isbnKeyWord
+                    }
+                });
 
-        // if(fieldldr.substring(7,8) == 'm' && field100.substring(22,25) == 'chi'){
-        //     //When conditions are unique, the year of publication must be carried
-        //     this.Publishedyear = true;
-        // }
-        // this.year = field100.substring(9,13);
+            }
+        })
+
+        this.pagenum = 1
+        this.types = 'isbn'
+        this.getCCKBbooklist(this.isbn).then((res: any) => {
+            let results = res
+            this.almaBooklist = results
+            let almaList = []
+            almaList = results.datalist
+            if (almaList.length > 0) {
+                let id = almaList[0].cckbid
+                this.router.navigate(['/bookdetail'], {queryParams: {id: id}})
+            }
+        })
+
+    }
+
+    get apiResult() {
+        return this._apiResult;
+    }
+
+    set apiResult(result: any) {
+        this._apiResult = result;
+        this.hasApiResult = result && Object.keys(result).length > 0;
     }
 
     get almaBooklist() {
@@ -127,35 +160,72 @@ export class MainComponent implements OnInit, OnDestroy {
         this._almaBooklist = result;
     }
 
-    imgerror(e){
+    get almabooktypes() {
+        return this._almabooktypes;
+    }
+
+    set almabooktypes(result: any) {
+        this._almabooktypes = result;
+    }
+
+    imgerror(e) {
         const defaultImg = '../../assets/fm_img.png';
         e.srcElement.src = defaultImg;
     }
 
-    toDetails(id:any){
-        this.router.navigate(['/bookdetail'],{queryParams: { id: id }})
+    toDetails(id: any) {
+        this.router.navigate(['/bookdetail'], {queryParams: {id: id}})
     }
 
     search() {
+        this.pagenum = 1
         this.getCCKBbooklist(this.values).then((res: any) => {
-            this.almaBooklist = res.datalist
+            this.almaBooklist = res
         })
-
     }
 
-    getCCKBbooklist(value:any) {
+    getCCKBbooklist(value: String) {
         let json = {
-            "apikey":'562930543E3E090957C595704CF28BE4',
-            "libcode":'233030',
-            "pagesize":'10',
-            "field":'isbn',
-            "value":value
+            "apikey": '562930543E3E090957C595704CF28BE4',
+            "libcode": this.libcode,
+            "pagesize": this.pagesize,
+            "pagenum": this.pagenum,
+            "field":
+                `[
+                {"key":"${this.types}","value":"${value}"}
+                {"key":"publish","value":"${this.publish}"}
+                {"key":"publishyear","value":"${this.publishyear}"}
+                ]`,
+            "booktype": this.booktypes,//书单id
         }
-        let jsons = `apikey=${json.apikey}&libcode=${json.libcode}&pagesize=${json.pagesize}&field=${json.field}&value=${json.value}`
+        let jsons = encodeURI(`apikey=${json.apikey}&libcode=${json.libcode}&pagesize=${json.pagesize}&pagenum=${json.pagenum}&booktype=${json.booktype}&searcharray=${json.field}`)
         return new Promise((resolve, reject) => {
             this.eventsService.getAuthToken().subscribe(
                 data => {
                     this.http.get(`https://api.exldevnetwork.net.cn/proxy/cckbapi/almaBooklist?${jsons}`, {
+                        headers: {
+                            'X-Proxy-Host': 'https://cckb.lib.tsinghua.edu.cn',
+                            'Authorization': 'Bearer ' + data
+                        }
+                    }).subscribe(function (data) {
+                        this.loading = false;
+                        resolve(data)
+                    }, error => {
+                        this.loading = false;
+                        reject(error)
+                    })
+                }
+            );
+
+        })
+    }
+
+    getCCKBpic(value: any) {
+        return new Promise((resolve, reject) => {
+            this.eventsService.getAuthToken().subscribe(
+                data => {
+                    // https://api.exldevnetwork.net.cn/proxy/${value}
+                    this.http.get(value, {
                         headers: {
                             'X-Proxy-Host': 'https://cckb.lib.tsinghua.edu.cn',
                             'Authorization': 'Bearer ' + data
@@ -174,22 +244,18 @@ export class MainComponent implements OnInit, OnDestroy {
         })
     }
 
-    getCCKBpic(value:any) {
+    getAlmaBooktype() {
         return new Promise((resolve, reject) => {
             this.eventsService.getAuthToken().subscribe(
                 data => {
-                    // https://api.exldevnetwork.net.cn/proxy/${value}
-                    this.http.get(value, {
+                    this.http.get(`https://api.exldevnetwork.net.cn/proxy/cckbapi/almaBooktype?apikey=562930543E3E090957C595704CF28BE4`, {
                         headers: {
-                            'X-Proxy-Host': 'http://cckb.lib.tsinghua.edu.cn',
+                            'X-Proxy-Host': 'https://cckb.lib.tsinghua.edu.cn',
                             'Authorization': 'Bearer ' + data
                         }
                     }).subscribe(function (data) {
-                        // this.loading = false;
                         resolve(data)
                     }, error => {
-                        // this.loading = false;
-                        // this.alert.error(this.translate.instant('i18n.error', {url: "https://api.exldevnetwork.net.cn" + lookupUrl.replace("KEY", key)}), {autoClose: true, delay: 3000});
                         reject(error)
                     })
                 }
@@ -198,14 +264,66 @@ export class MainComponent implements OnInit, OnDestroy {
         })
     }
 
-
-
     setSettings(value: any) {
         this.loading = true;
         if (value) {
             this.router.navigate(['/polsettings'])
         } else {
             this.router.navigate(['/cnasettings'])
+        }
+    }
+
+    searchtype(value: any) {
+        if (this.booktypes == '0') {
+            this.booktypes = ''
+        }
+        this.getCCKBbooklist(this.values).then((res: any) => {
+            this.almaBooklist = res
+            this.almaList = res.datalist
+        })
+    }
+
+    searchpublish(publish:any){
+        this.publish = publish
+        this.search()
+    }
+
+    searchpublishyear(publishyear:any){
+        this.publishyear = publishyear
+        this.search()
+    }
+
+    prev() {
+        if(this.pagenum <= 1){
+            return
+        }else{
+            this.pagenum --
+            this.almaBooklist = ''
+            this.loading = true
+            this.getCCKBbooklist(this.values).then((res: any) => {
+                this.loading = false;
+                let results = res
+                this.almaBooklist = results
+                this.almaList = results.datalist
+
+            })
+        }
+    }
+
+    next() {
+        if(this.pagenum >= 99){
+            return
+        }else{
+            this.pagenum ++
+            this.almaBooklist = ''
+            this.loading = true
+            this.getCCKBbooklist(this.values).then((res: any) => {
+                this.loading = false;
+                let results = res
+                this.almaBooklist = results
+                this.almaList = results.datalist
+
+            })
         }
     }
 

@@ -1,0 +1,94 @@
+.bookinfo-content{
+  margin-top: 10px;
+}
+
+.book-info {
+  background: #FFFFFF;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.book-info-img {
+  width:138px;
+}
+
+.imgBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 138px;
+  height:184px;
+  overflow: hidden;
+  border: 1px solid #dcdee2;
+  position: relative;
+
+  img {
+    max-height: 138px;
+    width: auto;
+    max-width: 138px
+  }
+
+}
+
+.book-info-right {
+  flex: 1;
+  padding: 0 0 0 30px;
+}
+
+.book-info-title {
+  color: #000;
+  font-size: 14px;
+  line-height: 30px;
+  margin-bottom:10px;
+  text-align: left;
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.bookInfoList {
+  font-size: 13px;
+  line-height:20px;
+  color: #636363;
+}
+
+.content {
+  font-size: 13px;
+  line-height:20px
+}
+
+.book-longer-info {
+  margin-top: 20px;
+  background: #FFFFFF;
+  margin-bottom: 20px;
+}
+
+.tabs-box{
+  display: flex;
+}
+
+.tab{
+  flex:1;
+  display: flex;
+  justify-content: center;
+  color: #666666;
+  border-bottom: 1px solid #DBDBDB;
+  padding: 10px 0;
+}
+
+.tabactive{
+  font-weight: bold;
+  padding: 10px 0;
+  flex:1;
+  display: flex;
+  justify-content: center;
+  color: #1A5E1E;
+  border-top: 1px solid #DBDBDB;
+  border-left: 1px solid #DBDBDB;
+  border-right: 1px solid #DBDBDB;
+}
+

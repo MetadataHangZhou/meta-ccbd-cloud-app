@@ -1,42 +1,172 @@
-<ng-container >
-  <section>
-    <h1>
-      {{'i18n.tip'|translate}}
-    </h1>
-  </section>
-
-  <div class="small-box-content" >
-    <div class="search-box" style="display: flex;align-items: center;">
-      <input matInput placeholder="输入ISBN"  [(ngModel)]="values" style="height: 30px;width: 300px">
-      <button mat-raised-button (click)="search()" color="primary" style="margin-left: 10px">检索</button>
-    </div>
-    <div class="booklist">
-      <div class="item-info" *ngFor="let hero of almaBooklist" (click)="toDetails(hero.cckbid)">
-        <div class="imgbox">
-          <img class="cover" [src]="hero.picfile" alt=""  (error)="imgerror($event)"/>
+<ng-container>
+    <section>
+        <h1>
+            {{'i18n.tip'|translate}}
+        </h1>
+    </section>
+    <ul>
+        <li>{{'i18n.maintip1'|translate}}</li>
+        <li>{{'i18n.maintip2'|translate}}</li>
+        <li>{{'i18n.maintip3'|translate}}</li>
+    </ul>
+    <div class="small-box-content" *ngIf="!boxSize && !loading">
+        <div class="input-group-btn">
         </div>
-        <div class="booktitle">{{hero.booktitle}}</div>
-        <div class="author">{{hero.author}}</div>
-      </div>
+        <div class="search-box" style="display: flex;align-items: center;">
+            <div style="display: flex;width:75%;border: 1px solid gray;padding: 7px;border-radius:5px ;">
+                <select class="drop-select" id="dropselect" [(ngModel)]="types">
+                    <option value="all">{{'i18n.all'|translate}}</option>
+                    <option value="isbn">ISBN</option>
+                    <option value="publish">{{'i18n.publish'|translate}}</option>
+                    <option value="booktitle">{{'i18n.booktitle'|translate}}</option>
+                    <option value="author">{{'i18n.author'|translate}}</option>
+                </select>
+                <input matInput class="search-input" placeholder="" [(ngModel)]="values">
+            </div>
+            <button mat-raised-button (click)="search()" color="primary"
+                    style="margin-left: 10px">{{'i18n.searchbt'|translate}}</button>
+        </div>
+        <div class="booklist">
+            <div class="item-info" *ngFor="let datalists of almaBooklist.almalist" (click)="toDetails(datalists.cckbid)">
+                <div class="book-info-img">
+                    <div class="imgBox" v-if="bookInfo.cckbid">
+                        <img class="cover" [src]="datalists.picfile" alt="" (error)="imgerror($event)"/>
+                    </div>
+                </div>
+                <div class="booktitle">{{datalists.booktitle}}</div>
+                <div class="author">{{datalists.author}}</div>
+            </div>
+        </div>
+        <div class="page-sort" style="display: flex;justify-content: center">
+            <button style="margin-right: 10px" mat-raised-button color="primary" (click)="prev()"
+            >{{'i18n.previouspage'|translate}}</button>
+            <button style="margin-right: 10px" mat-raised-button color="primary" (click)="next()"
+            >{{'i18n.nextpage'|translate}}</button>
+        </div>
     </div>
+    <div class="large-box-content" *ngIf="boxSize  &&  !loading">
+        <div class="flexBoxStartTopWrap">
+            <div class="list-nav-group">
+                <!-------------publish----------->
+                <div class="list-nav-group-inside">
+                    <div class="latest-title-box">
+                        <span class="zh-title">出版社</span>
+                    </div>
+                    <div class="list">
+                        <div class="publish-item"
+                             [ngClass]="{'publish-item':tabIndex != 0,'publish-item-active':tabIndex === 0}"
+                             *ngFor="let publish of almaBooklist.aggpublish" (click)="searchpublish(publish.name)">
+                            <div class="parent-title-group re-parent-title-group">
+                                <div class="parent-title">
+                                    <a class="sort-title flexBoxSpaceBetween">
+                                        <div class="sort-title-content flexBoxSpaceBetween">
+                                            <span class="word ellipse"> {{publish.name}}</span>
+                                            <span class="num">({{publish.count}})</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div class="more-box" v-if="subject.length>9">-->
+                        <!--<a class="more" @click="openFn('subject')" v-if="!subjectMore">-->
+                        <!--展开更多-->
+                        <!--</a>-->
+                        <!--<a v-else @click="closeFn('subject')">-->
+                        <!--{{$t('public.collapse')}}-->
+                        <!--</a>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+                <!------------publishyear------------>
+                <div class="list-nav-group-inside">
+                    <div class="latest-title-box">
+                        <span class="zh-title">出版日期</span>
+                    </div>
+                    <div class="list">
+                        <div class="publish-item" *ngFor="let publishyear of almaBooklist.aggpublishyear" (click)="searchpublishyear(publishyear.name)">
+                            <div class="parent-title-group re-parent-title-group">
+                                <div class="parent-title">
+                                    <a class="sort-title flexBoxSpaceBetween">
+                                        <div class="sort-title-content flexBoxSpaceBetween">
+                                            <span class="word ellipse"> {{publishyear.name}}年</span>
+                                            <span class="num">({{publishyear.count}})</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div class="more-box" v-if="publishyear.length>9">-->
+                        <!--<a class="more" @click="openFn('publishyear')" v-if="!publishyearMore">-->
+                        <!--展开更多-->
+                        <!--</a>-->
+                        <!--<a v-else @click="closeFn('publishyear')">-->
+                        <!--{{$t('public.collapse')}}-->
+                        <!--</a>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+            </div>
 
-  </div>
-  <!--<div class="large-box-content">-->
-    <!--bbbb-->
-  <!--</div>-->
-  <!--<div class="loading-shade" *ngIf="loading">-->
-    <!--<mat-spinner diameter="50"></mat-spinner>-->
-  <!--</div>-->
-
+            <div class="search-list-group">
+                <div class="search-inside-group">
+                    <div class="search-tips">
+                        <div class="flexBoxStartTop">
+                            <div class="box-left-booktype">
+                                <div style="display: flex;width:100%;border: 1px solid gray;padding: 7px;border-radius:5px ;">
+                                    <select class="drop-select" id="select-booktype" [(ngModel)]="booktypes"
+                                            (change)="searchtype()">
+                                        <option [value]='0'> {{'i18n.all'|translate}}</option>
+                                        <option *ngFor="let types of almabooktypes"
+                                                [value]="types.id"> {{types.chiname}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="box-right-search">
+                                <div class="search-box" style="display: flex;align-items: center;">
+                                    <div style="display: flex;width:75%;border: 1px solid gray;padding: 7px;border-radius:5px ;">
+                                        <select class="drop-select" [(ngModel)]="types">
+                                            <option value="all">{{'i18n.all'|translate}}</option>
+                                            <option value="isbn">ISBN</option>
+                                            <option value="publish">{{'i18n.publish'|translate}}</option>
+                                            <option value="booktitle">{{'i18n.booktitle'|translate}}</option>
+                                            <option value="author">{{'i18n.author'|translate}}</option>
+                                        </select>
+                                        <input matInput class="search-input" placeholder="" [(ngModel)]="values">
+                                    </div>
+                                    <button mat-raised-button (click)="search()" color="primary"
+                                            style="margin-left: 10px">{{'i18n.searchbt'|translate}}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="search-list">
+                        <div class="booklist">
+                            <div class="item-info-large" *ngFor="let item of almaBooklist.almalist"
+                                 (click)="toDetails(item.cckbid)">
+                                <div class="book-info-img">
+                                    <div class="imgBox" v-if="bookInfo.cckbid">
+                                        <img class="cover" [src]="item.picfile" alt="" (error)="imgerror($event)"/>
+                                    </div>
+                                </div>
+                                <div class="booktitle">{{item.booktitle}}</div>
+                                <div class="author">{{item.author}}</div>
+                            </div>
+                        </div>
+                        <div class="page-sort" style="display: flex;justify-content: center">
+                            <button style="margin-right: 10px" mat-raised-button color="primary" (click)="prev()"
+                            >{{'i18n.previouspage'|translate}}</button>
+                            <button style="margin-right: 10px" mat-raised-button color="primary" (click)="next()"
+                            >{{'i18n.nextpage'|translate}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="loading-shade" *ngIf="!almaBooklist  &&  loading">
+        <mat-spinner diameter="50"></mat-spinner>
+    </div>
 </ng-container>
-
-<!--<section>-->
-  <!--<button style="margin-right: 10px" mat-raised-button color="primary" (click)="setSettings(true)"-->
-  <!--&gt;{{'i18n.Update'|translate}}</button>-->
-  <!--&lt;!&ndash;[disabled]="!hasApiResult || loading"   [disabled]="!hasApiResult || loading"&ndash;&gt;-->
-  <!--<button mat-raised-button color="primary" (click)="setSettings(false)"-->
-  <!--&gt;{{'i18n.Rebuild'|translate}}</button>-->
-<!--</section>-->
 
 
 

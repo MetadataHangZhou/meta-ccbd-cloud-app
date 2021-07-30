@@ -47,6 +47,26 @@
     "Vendor": "Vendor",
     "Fund": "Fund",
     "UpdateSuccess": "Update success，create new POL [ {{number}} ]!",
-    "UpdateConfirm": "Do you want to cancel Current POLINE,and create a new POLine?"
+    "UpdateConfirm": "Do you want to cancel Current POLINE,and create a new POLine?",
+
+    "maintip1": "Browse to a book record showing details",
+    "maintip2": "Keyword retrieval",
+    "maintip3": "Extension window to browse more",
+    "all": "All",
+    "publish": "Press",
+    "booktitle": "Booktitle",
+    "author": "Author",
+    "bookdetails": "Book Details",
+    "back":"Back",
+    "publishyear": "Pub Year",
+    "classnum": "CLC",
+    "abstract": "Abstract",
+    "directory": "Directory",
+    "authors": "Introduction",
+    "buyinfo":"To purchase paper books, please try the following methods",
+    "previouspage": "Prev-page",
+    "nextpage": "Next-page",
+    "searchbt": "Search",
+    "buybt": "BUYINFO"
   }
 }

@@ -9,13 +9,14 @@ import {
 } from '@exlibris/exl-cloudapp-angular-lib';
 import {Router, ActivatedRoute} from '@angular/router';
 
+
 @Component({
     selector: 'app-bookdetail',
     templateUrl: './bookdetail.component.html',
     styleUrls: ['./bookdetail.component.scss']
 })
 @NgModule({
-    imports: [HttpClientModule, FormsModule]
+    imports: [HttpClientModule, FormsModule],
 })
 export class BookdetailComponent implements OnInit, OnDestroy {
 
@@ -23,12 +24,16 @@ export class BookdetailComponent implements OnInit, OnDestroy {
     pageEntities: Entity[];
     private _apiResult: any;
     private _bookInfo:any;
-    private name: String = '';
+    private cfmarcstr: String = '';
+    private isTab = false
     hasApiResult: boolean = false;
     choosebt: boolean = false; //the judege button is 'Update' or 'Rebuild'
     ifCNor21: boolean = false;
     show: boolean = false;
-    loading = false;
+    loading = true;
+    private tabIndex = 0;
+    private isShowInfo = false;
+    private libcode = "233030";
 
     constructor(private restService: CloudAppRestService,
                 private eventsService: CloudAppEventsService,
@@ -41,11 +46,22 @@ export class BookdetailComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.eventsService.getInitData().subscribe(data=> {
+            this.libcode = data.instCode
+        });
         this.pageLoad$ = this.eventsService.onPageLoad(this.onPageLoad);
         this.activatedRoute.queryParams.subscribe(param => {
-            console.log(param.id)
             this.getCCKBbookdetail(param.id).then((res: any) => {
-                this.bookInfo = res.datalist
+                this.loading = false;
+                if(res.almalist.marc21str){
+                    var reg = new RegExp( 'src="images/bluemarc.png"' , "g" )
+                    var newstr = res.almalist.marc21str.replace( reg , `src='../../assets/blue.png'` );
+                    this.cfmarcstr = newstr
+                }
+                this.bookInfo = res.almalist
+
+
+
             })
         })
     }
@@ -76,21 +92,24 @@ export class BookdetailComponent implements OnInit, OnDestroy {
         if ((pageInfo.entities || []).length == 1) {
             const entity = pageInfo.entities[0];
             if (entity.type === EntityType.BIB_MMS) {
-                this.restService.call(entity.link).subscribe(result => {
-                    this.apiResult = result
-                    // this.parseRes(this.apiResult)
-                });
+                // this.restService.call(entity.link).subscribe(result => {
+                //     this.apiResult = result
+                //     // this.parseRes(this.apiResult)
+                // });
+                this.show = true;
+                //是否显示更新bid的按钮
             }
 
         } else {
             this.apiResult = {};
+            this.show = false;
         }
     }
 
     getCCKBbookdetail(value: any) {
         let json = {
             "apikey": '562930543E3E090957C595704CF28BE4',
-            "libcode": '233030',
+            "libcode": this.libcode,
             "value": value
         }
         let jsons = `apikey=${json.apikey}&libcode=${json.libcode}&cckbid=${json.value}`
@@ -99,7 +118,7 @@ export class BookdetailComponent implements OnInit, OnDestroy {
                 data => {
                     this.http.get(`https://api.exldevnetwork.net.cn/proxy/cckbapi/almaBooklistDetails?${jsons}`, {
                         headers: {
-                            'X-Proxy-Host': 'http://cckb.lib.tsinghua.edu.cn',
+                            'X-Proxy-Host': 'https://cckb.lib.tsinghua.edu.cn',
                             'Authorization': 'Bearer ' + data
                         }
                     }).subscribe(function (data) {
@@ -111,7 +130,30 @@ export class BookdetailComponent implements OnInit, OnDestroy {
             );
         })
     }
+    showConfig(){
+        history.back()
+    }
 
+    createpol(value:any){
+        this.router.navigate(['/polsettings'])
+    }
+
+    updatebid(value:any){
+        this.router.navigate(['/cnasettings'])
+    }
+
+    imgerror(e){
+        const defaultImg = '../../assets/fm_img.png';
+        e.srcElement.src = defaultImg;
+    }
+
+    chooseTabs(tab:any){
+        this.tabIndex = tab;
+    }
+
+    buypop(){
+        this.isShowInfo = !this.isShowInfo
+    }
 }
 
 
