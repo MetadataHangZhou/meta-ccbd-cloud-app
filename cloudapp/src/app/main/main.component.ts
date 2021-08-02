@@ -26,7 +26,7 @@ export class MainComponent implements OnInit, OnDestroy {
     private _apiResult: any;
     hasApiResult: boolean = false;
     private types: String = 'all';
-    private booktypes = '';
+    private booktypes = '0';
     private loading = true;
     private values: String = '';
     private almaList: any;
@@ -38,6 +38,8 @@ export class MainComponent implements OnInit, OnDestroy {
     private isbn = '';
     private pagenum = 1;
     private pagesize = 16;
+    private totals:any;
+    private sortOnMark = '';
     private apikey = "562930543E3E090957C595704CF28BE4";
     private libcode = "233030";
 
@@ -73,6 +75,7 @@ export class MainComponent implements OnInit, OnDestroy {
             // let results = res.datalist;
             let results = res
             this.almaBooklist = results
+            this.totals = results.total
             // this.almaList = results.datalist
             // let list = results || [];
             // list.forEach((item, index) => {
@@ -132,9 +135,9 @@ export class MainComponent implements OnInit, OnDestroy {
         this.types = 'isbn'
         this.getCCKBbooklist(this.isbn).then((res: any) => {
             let results = res
-            this.almaBooklist = results
+            // this.almaBooklist = results
             let almaList = []
-            almaList = results.datalist
+            almaList = results.almalist
             if (almaList.length > 0) {
                 let id = almaList[0].cckbid
                 this.router.navigate(['/bookdetail'], {queryParams: {id: id}})
@@ -181,6 +184,7 @@ export class MainComponent implements OnInit, OnDestroy {
         this.pagenum = 1
         this.getCCKBbooklist(this.values).then((res: any) => {
             this.almaBooklist = res
+            this.totals = res.total
         })
     }
 
@@ -193,7 +197,6 @@ export class MainComponent implements OnInit, OnDestroy {
             "field":
                 `[
                 {"key":"${this.types}","value":"${value}"}
-                {"key":"publish","value":"${this.publish}"}
                 {"key":"publishyear","value":"${this.publishyear}"}
                 ]`,
             "booktype": this.booktypes,//书单id
@@ -274,17 +277,17 @@ export class MainComponent implements OnInit, OnDestroy {
     }
 
     searchtype(value: any) {
-        if (this.booktypes == '0') {
-            this.booktypes = ''
-        }
         this.getCCKBbooklist(this.values).then((res: any) => {
             this.almaBooklist = res
-            this.almaList = res.datalist
+            // this.almaList = res.datalist
+            this.totals = res.total
         })
     }
 
     searchpublish(publish:any){
+        this.types = 'publish'
         this.publish = publish
+        this.values = publish
         this.search()
     }
 
@@ -327,4 +330,14 @@ export class MainComponent implements OnInit, OnDestroy {
         }
     }
 
+    close(value:any){
+        if(value === 1){
+            this.types = 'all'
+            this.publish = ''
+            this.values = ''
+        }else{
+            this.publishyear = ''
+        }
+        this.search()
+    }
 }

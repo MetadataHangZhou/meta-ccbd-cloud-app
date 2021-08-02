@@ -38,22 +38,17 @@
 }
 
 .book-info-title {
-  color: #000;
+  color: #333333;
   font-size: 14px;
   line-height: 30px;
   margin-bottom:10px;
   text-align: left;
-  display: -webkit-box;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
 }
 
 .bookInfoList {
-  font-size: 13px;
   line-height:20px;
-  color: #636363;
+  color: #999999;
+  font-size: 12px;
 }
 
 .content {
@@ -81,12 +76,13 @@
 }
 
 .tabactive{
-  font-weight: bold;
   padding: 10px 0;
   flex:1;
   display: flex;
   justify-content: center;
+  font-size: 14px;
   color: #1A5E1E;
+  font-weight: bold;
   border-top: 1px solid #DBDBDB;
   border-left: 1px solid #DBDBDB;
   border-right: 1px solid #DBDBDB;

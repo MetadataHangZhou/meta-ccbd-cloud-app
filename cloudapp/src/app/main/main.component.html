@@ -13,7 +13,7 @@
         <div class="input-group-btn">
         </div>
         <div class="search-box" style="display: flex;align-items: center;">
-            <div style="display: flex;width:75%;border: 1px solid gray;padding: 7px;border-radius:5px ;">
+            <div style="display: flex;width:75%;border: 1px solid #C2C2C2;padding: 7px;">
                 <select class="drop-select" id="dropselect" [(ngModel)]="types">
                     <option value="all">{{'i18n.all'|translate}}</option>
                     <option value="isbn">ISBN</option>
@@ -24,10 +24,15 @@
                 <input matInput class="search-input" placeholder="" [(ngModel)]="values">
             </div>
             <button mat-raised-button (click)="search()" color="primary"
-                    style="margin-left: 10px">{{'i18n.searchbt'|translate}}</button>
+                    style="margin-left: 10px">
+                <!--{{'i18n.searchbt'|translate}}-->
+                <img src="../../assets/search_icon.png">
+            </button>
         </div>
+        <div class="search-total" style="margin-top: 10px">检索到：{{totals}}</div>
         <div class="booklist">
-            <div class="item-info" *ngFor="let datalists of almaBooklist.almalist" (click)="toDetails(datalists.cckbid)">
+            <div class="item-info" *ngFor="let datalists of almaBooklist.almalist"
+                 (click)="toDetails(datalists.cckbid)">
                 <div class="book-info-img">
                     <div class="imgBox" v-if="bookInfo.cckbid">
                         <img class="cover" [src]="datalists.picfile" alt="" (error)="imgerror($event)"/>
@@ -50,20 +55,19 @@
                 <!-------------publish----------->
                 <div class="list-nav-group-inside">
                     <div class="latest-title-box">
-                        <span class="zh-title">出版社</span>
+                        <span class="zh-title">{{'i18n.publish'|translate}}</span>
                     </div>
                     <div class="list">
                         <div class="publish-item"
-                             [ngClass]="{'publish-item':tabIndex != 0,'publish-item-active':tabIndex === 0}"
                              *ngFor="let publish of almaBooklist.aggpublish" (click)="searchpublish(publish.name)">
                             <div class="parent-title-group re-parent-title-group">
                                 <div class="parent-title">
-                                    <a class="sort-title flexBoxSpaceBetween">
+                                    <div class="sort-title flexBoxSpaceBetween">
                                         <div class="sort-title-content flexBoxSpaceBetween">
                                             <span class="word ellipse"> {{publish.name}}</span>
                                             <span class="num">({{publish.count}})</span>
                                         </div>
-                                    </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -80,18 +84,19 @@
                 <!------------publishyear------------>
                 <div class="list-nav-group-inside">
                     <div class="latest-title-box">
-                        <span class="zh-title">出版日期</span>
+                        <span class="zh-title">{{'i18n.publishyear'|translate}}</span>
                     </div>
                     <div class="list">
-                        <div class="publish-item" *ngFor="let publishyear of almaBooklist.aggpublishyear" (click)="searchpublishyear(publishyear.name)">
+                        <div class="publish-item" *ngFor="let publishyear of almaBooklist.aggpublishyear"
+                             (click)="searchpublishyear(publishyear.name)">
                             <div class="parent-title-group re-parent-title-group">
                                 <div class="parent-title">
-                                    <a class="sort-title flexBoxSpaceBetween">
+                                    <div class="sort-title flexBoxSpaceBetween">
                                         <div class="sort-title-content flexBoxSpaceBetween">
                                             <span class="word ellipse"> {{publishyear.name}}年</span>
                                             <span class="num">({{publishyear.count}})</span>
                                         </div>
-                                    </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -112,10 +117,11 @@
                     <div class="search-tips">
                         <div class="flexBoxStartTop">
                             <div class="box-left-booktype">
-                                <div style="display: flex;width:100%;border: 1px solid gray;padding: 7px;border-radius:5px ;">
+                                <div style="display: flex;width:100%;
+                                     border: 1px solid #C2C2C2;padding: 7px;">
                                     <select class="drop-select" id="select-booktype" [(ngModel)]="booktypes"
-                                            (change)="searchtype()">
-                                        <option [value]='0'> {{'i18n.all'|translate}}</option>
+                                            style="width: 300px" (change)="searchtype()">
+                                        <option [value]='0' > {{'i18n.all'|translate}}</option>
                                         <option *ngFor="let types of almabooktypes"
                                                 [value]="types.id"> {{types.chiname}}</option>
                                     </select>
@@ -123,7 +129,7 @@
                             </div>
                             <div class="box-right-search">
                                 <div class="search-box" style="display: flex;align-items: center;">
-                                    <div style="display: flex;width:75%;border: 1px solid gray;padding: 7px;border-radius:5px ;">
+                                    <div style="display: flex;width:100px;border: 1px solid #C2C2C2;padding: 7px;margin-right: 10px;">
                                         <select class="drop-select" [(ngModel)]="types">
                                             <option value="all">{{'i18n.all'|translate}}</option>
                                             <option value="isbn">ISBN</option>
@@ -131,13 +137,22 @@
                                             <option value="booktitle">{{'i18n.booktitle'|translate}}</option>
                                             <option value="author">{{'i18n.author'|translate}}</option>
                                         </select>
+                                    </div>
+                                    <div style="display: flex;width:75%;border: 1px solid #C2C2C2;padding: 7px;">
                                         <input matInput class="search-input" placeholder="" [(ngModel)]="values">
                                     </div>
                                     <button mat-raised-button (click)="search()" color="primary"
-                                            style="margin-left: 10px">{{'i18n.searchbt'|translate}}</button>
+                                            style="margin-left: 10px;margin-right: 10px">
+                                        <img src="../../assets/search_icon.png">
+                                        <!--{{'i18n.searchbt'|translate}}-->
+                                    </button>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="search-total" style="display: flex;justify-content: flex-start;align-items: center;margin-top: 10px">检索到：{{totals}}
+                        <div class="publish-bt" *ngIf="publish">{{publish}} <img style="width: 14px;height: 14px" src="../../assets/close.png" (click)="close(1)"> </div>
+                        <div class="publish-bt" *ngIf="publishyear">{{publishyear}} <img style="width: 14px;height: 14px" src="../../assets/close.png" (click)="close(2)"></div>
                     </div>
                     <div class="search-list">
                         <div class="booklist">

@@ -1,6 +1,6 @@
 {
   "name": "my-exl-cloudapp",
-  "version": "1.0.3-beta",
+  "version": "1.0.4-beta",
   "private": true,
   "scripts": {
     "start": "eca start --no-install --no-open-browser"

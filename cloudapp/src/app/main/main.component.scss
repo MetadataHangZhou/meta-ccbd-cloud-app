@@ -43,6 +43,7 @@ textarea {
   flex: 0 0 50%;
   -ms-flex-direction: column;
   flex-direction: column;
+  margin-bottom: 20px;
 }
 
 .item-info-large{
@@ -51,6 +52,7 @@ textarea {
   flex: 0 0 12%;
   -ms-flex-direction: column;
   flex-direction: column;
+  margin-bottom: 20px;
 }
 
 .book-info-img {
@@ -76,11 +78,33 @@ textarea {
 }
 
 .booktitle{
-  padding: 10px;
+  margin-top: 5px;
+  margin-left: 18px;
+  color: #333333;
+  width:80%;
+  text-align: left;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-height: 26px;
+  -webkit-box-orient: vertical;
 }
 
 .author{
-  padding: 10px;
+  margin-left:18px;
+  color: #999999;
+  font-size: 12px;
+  width:80%;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-height: 24px;
+  -webkit-box-orient: vertical;
+
 }
 
 .drop-select{
@@ -134,9 +158,13 @@ textarea {
   padding: 10px 20px;
 }
 
+.publish-item:hover {
+  background: #e3e3e3;
+  cursor: pointer;
+}
+
 .publish-item-active{
   padding: 10px 20px;
-
 }
 
 .list{
@@ -152,6 +180,26 @@ textarea {
   display: flex;
   justify-content: space-between;
   box-sizing: content-box;
+}
+
+.publish-bt{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  width: 145px;
+  padding-left: 8px;
+  padding-right: 8px;
+  height: 26px;
+  line-height: 26px;
+  font-size: 14px;
+  margin: 4px 10px;
+  background: #1A5E1E;
+  color: #fff;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 
