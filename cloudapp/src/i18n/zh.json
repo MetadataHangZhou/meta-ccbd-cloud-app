@@ -42,12 +42,12 @@
     "NoPoLineTip": "请导航到订单行",
     "Updatepol": "修改",
     "UpdateDesc": "订单行修正将创建新的订单行,并关闭原有订单行",
-    "UpdatePoLine": "修改订单行",
+    "UpdatePoLine": "创建订单行",
     "Currency": "币种",
     "Vendor": "书商",
     "Fund": "经费",
-    "UpdateSuccess": "更新成功，已生成新的订单行POL [{{number}}]!",
-    "UpdateConfirm": "是否要关闭当前订单行,并创建新的订单行?",
+    "UpdateSuccess": "已生成新的订单行POL [{{number}}]!",
+    "UpdateConfirm": "是否创建新的订单行?",
 
     "maintip1": "浏览到一条书目记录显示详情",
     "maintip2": "关键词检索",
@@ -67,6 +67,11 @@
     "previouspage": "上一页",
     "nextpage": "下一页",
     "searchbt": "检索",
-    "buybt": "采购信息"
+    "buybt": "采购信息",
+
+    "format": "开本",
+    "binding": "装帧",
+    "sort": "分类",
+    "pages": "分页"
   }
 }

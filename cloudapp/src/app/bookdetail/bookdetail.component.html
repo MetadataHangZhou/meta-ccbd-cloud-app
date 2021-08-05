@@ -5,8 +5,9 @@
             <button mat-raised-button color="primary" (click)="showConfig()">{{'i18n.back'|translate}}</button>
         </div>
     </section>
-    <div >
-    <div class="bookinfo-content" *ngIf="bookInfo && !loading">
+    <div class="small-box-content" *ngIf="!boxSize && !loading">
+        <!--*ngIf="bookInfo && !loading"-->
+    <div class="bookinfo-content">
         <div class="book-info">
             <div class="book-info-img">
                 <div class="imgBox">
@@ -26,14 +27,14 @@
                     </div>
                     <div class="bookInfoList"><span class="title">{{'i18n.classnum'|translate}}：</span><span class="content">{{bookInfo.sortvalue?bookInfo.sortvalue:'-'}}</span>
                     </div>
-                    <div class="bookInfoList"><span class="title">分页：</span><span class="content">{{bookInfo.pagenum?bookInfo.pagenum:'-'}}</span>
-                    </div>
-                    <div class="bookInfoList"><span class="title">开本：</span><span class="content">{{bookInfo.booksize?bookInfo.booksize:'-'}}</span>
-                    </div>
-                    <div class="bookInfoList"><span class="title">装帧：</span><span class="content">{{bookInfo.binding?bookInfo.binding:'-'}}</span>
-                    </div>
-                    <div class="bookInfoList"><span class="title">分类：</span><span class="content">{{bookInfo.sortname?bookInfo.sortname:'-'}}</span>
-                    </div>
+                    <!--<div class="bookInfoList"><span class="title">分页：</span><span class="content">{{bookInfo.pagenum?bookInfo.pagenum:'-'}}</span>-->
+                    <!--</div>-->
+                    <!--<div class="bookInfoList"><span class="title">开本：</span><span class="content">{{bookInfo.booksize?bookInfo.booksize:'-'}}</span>-->
+                    <!--</div>-->
+                    <!--<div class="bookInfoList"><span class="title">装帧：</span><span class="content">{{bookInfo.binding?bookInfo.binding:'-'}}</span>-->
+                    <!--</div>-->
+                    <!--<div class="bookInfoList"><span class="title">分类：</span><span class="content">{{bookInfo.sortname?bookInfo.sortname:'-'}}</span>-->
+                    <!--</div>-->
                     <!--<div *ngIf="false">-->
                         <!---->
                     <!--</div>-->
@@ -58,21 +59,103 @@
             <div class="left">
                 <button style="margin-right: 10px" mat-raised-button color="primary" (click)="createpol()"
                 >{{'i18n.Update'|translate}}</button>
-                <button style="margin-right: 10px" mat-raised-button color="primary" (click)="updatebid()" *ngIf="show"
-                >{{'i18n.Rebuild'|translate}}</button>
+                <!--<button style="margin-right: 10px" mat-raised-button color="primary" (click)="updatebid()" *ngIf="show"-->
+                <!--&gt;{{'i18n.Rebuild'|translate}}</button>-->
             </div>
             <div class="right">
                 <div class="buyinfo" style="margin-right: 10px" (click)="buypop()"><img src="../../assets/buycar_icon.png" /> </div>
             </div>
         </div>
     </section>
+        <div class="buyinfo" style="margin-top: 20px;background: #f1f1f1" *ngIf="isShowInfo">
+            <h6>{{'i18n.buyinfo'|translate}}：</h6>
+            <h6>ZHEJIANG SINOUR INDUSTRY CO.，LTD.</h6>
+            <h6>Tel：0086-571-85172155, 0086-571-85172729</h6>
+            <h6>Fax：0086-571-85172927</h6>
+            <h6>E-mail: zsic_ducx@139.com , eiketsu_chen@hotmail.com , 13486186540@163.com</h6>
+        </div>
     </div>
-    <div class="buyinfo" style="margin-top: 20px;background: #f1f1f1" *ngIf="isShowInfo">
-        <h6>{{'i18n.buyinfo'|translate}}：</h6>
-        <h6>ZHEJIANG SINOUR INDUSTRY CO.，LTD.</h6>
-        <h6>Tel：0086-571-85172155, 0086-571-85172729</h6>
-        <h6>Fax：0086-571-85172927</h6>
-        <h6>E-mail: zsic_ducx@139.com , eiketsu_chen@hotmail.com , 13486186540@163.com</h6>
+    <div class="large-box-content" *ngIf="boxSize  &&  !loading">
+        <div class="bookinfo-content">
+            <div style="display: flex;justify-content: space-between;">
+                <div class="book-info" style="flex:1;margin-right: 20px">
+                    <div class="book-info-img-large">
+                        <div class="imgBox-large">
+                            <img class="cover" [src]="bookInfo.picfile" alt=""  (error)="imgerror($event)"/>
+                        </div>
+                    </div>
+                    <div class="book-info-right">
+                        <!--class="book-info-title"-->
+                        <h1 >{{bookInfo.booktitle}}</h1>
+                        <div style="margin-top: 10px;display: flex;">
+                            <div >
+                                <div class="bookInfoList"><span class="title">{{'i18n.author'|translate}}：</span><span class="content">{{bookInfo.author?bookInfo.author:'-'}}</span>
+                                </div>
+                                <div class="bookInfoList"><span class="title">ISBN：</span><span class="content">{{bookInfo.isbn?bookInfo.isbn:'-'}}</span>
+                                </div>
+                                <div class="bookInfoList"><span class="title">{{'i18n.format'|translate}}：</span><span class="content">{{bookInfo.booksize?bookInfo.booksize:'-'}}</span>
+                                </div>
+                                <div class="bookInfoList"><span class="title">{{'i18n.binding'|translate}}：</span><span class="content">{{bookInfo.binding?bookInfo.binding:'-'}}</span>
+                                </div>
+                                <div class="bookInfoList"><span class="title">{{'i18n.sort'|translate}}：</span><span class="content">{{bookInfo.sortname?bookInfo.sortname:'-'}}</span>
+                                </div>
+                            </div>
+                            <div style="margin-left: 100px">
+                                <div class="bookInfoList"><span class="title">{{'i18n.publish'|translate}}：</span><span class="content">{{bookInfo.publish?bookInfo.publish:'-'}}</span>
+                                </div>
+                                <div class="bookInfoList"><span class="title">{{'i18n.publishyear'|translate}}：</span><span class="content"
+                                                                                                                            v-if="bookInfo.publishdate">{{bookInfo.publishdate.substring(0,7) ? bookInfo.publishdate.substring(0,7):'-'}}</span></div>
+                                <div class="bookInfoList"><span class="title">{{'i18n.classnum'|translate}}：</span><span class="content">{{bookInfo.sortvalue?bookInfo.sortvalue:'-'}}</span>
+                                </div>
+                                <div class="bookInfoList"><span class="title">{{'i18n.pages'|translate}}：</span><span class="content">{{bookInfo.pagenum?bookInfo.pagenum:'-'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <section>
+                            <div class="bt-box" style="display: flex;margin-top: 20px">
+                                <div class="left">
+                                    <button style="margin-right: 10px" mat-raised-button color="primary" (click)="createpol()"
+                                    >{{'i18n.Update'|translate}}</button>
+                                    <!--<button style="margin-right: 10px" mat-raised-button color="primary" (click)="updatebid()" *ngIf="show"-->
+                                    <!--&gt;{{'i18n.Rebuild'|translate}}</button>-->
+                                </div>
+                                <div class="right">
+                                    <div class="buyinfo" style="margin-right: 10px" (click)="buypop()"><img src="../../assets/buycar_icon.png" /> </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+                <div style="border-left: 1px solid #DBDBDB;padding-left: 50px;flex:1;">
+                    <h1>Marc21</h1>
+                    <div style="line-height: 25px;font-size: 13px;" [innerHTML]="cfmarcstr?cfmarcstr:''"></div>
+                </div>
+            </div>
+
+            <div class="book-longer-info">
+                <div class="tabs-box">
+                    <div [ngClass]="{'tab-large':tabIndex != 0,'tabactive-large':tabIndex === 0}" (click)="chooseTabs(0)" >{{'i18n.abstract'|translate}}</div>
+                    <!--<div [ngClass]="{'tab':tabIndex != 1,'tabactive':tabIndex === 1}" (click)="chooseTabs(1)">marc21</div>-->
+                    <div [ngClass]="{'tab-large':tabIndex != 2,'tabactive-large':tabIndex === 2}" (click)="chooseTabs(2)">{{'i18n.directory'|translate}}</div>
+                    <div [ngClass]="{'tab-large':tabIndex != 3,'tabactive-large':tabIndex === 3}" (click)="chooseTabs(3)" >{{'i18n.authors'|translate}}</div>
+                </div>
+                <div style="line-height: 25px;font-size: 13px;margin-top: 10px" [innerHTML]="bookInfo.bookdir?bookInfo.bookdir:''" *ngIf="tabIndex === 2"></div>
+                <div style="line-height: 25px;font-size: 13px;margin-top: 10px" [innerHTML]="bookInfo.bookdesc?bookInfo.bookdesc:''" *ngIf="tabIndex === 0"></div>
+                <div style="line-height: 25px;font-size: 13px;margin-top: 10px" [innerHTML]="bookInfo.authordesc?bookInfo.authordesc:''" *ngIf="tabIndex === 3"></div>
+                <!--<div style="line-height: 25px;font-size: 13px;margin-top: 10px" [innerHTML]="cfmarcstr?cfmarcstr:''" *ngIf="tabIndex === 1"></div>-->
+            </div>
+
+            <div class="buyinfo" style="margin-top: 20px;background: #f1f1f1" *ngIf="isShowInfo">
+                <h6>{{'i18n.buyinfo'|translate}}：</h6>
+                <h6>ZHEJIANG SINOUR INDUSTRY CO.，LTD.</h6>
+                <h6>Tel：0086-571-85172155, 0086-571-85172729</h6>
+                <h6>Fax：0086-571-85172927</h6>
+                <h6>E-mail: zsic_ducx@139.com , eiketsu_chen@hotmail.com , 13486186540@163.com</h6>
+            </div>
+        </div>
+
+
+
     </div>
     <div class="loading-shade" *ngIf="!bookInfo && loading">
         <mat-spinner diameter="50"></mat-spinner>

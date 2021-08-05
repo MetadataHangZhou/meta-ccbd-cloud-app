@@ -42,7 +42,7 @@
     "NoPoLineTip": "Please navigate to a POLINE record.",
     "Updatepol": "Update",
     "UpdateDesc": "POL Post Correction will create new POL,and then cancel the current POL.",
-    "UpdatePoLine": "Update POLINE",
+    "UpdatePoLine": "Create POLINE",
     "Currency": "Currency",
     "Vendor": "Vendor",
     "Fund": "Fund",
@@ -67,6 +67,11 @@
     "previouspage": "Prev-page",
     "nextpage": "Next-page",
     "searchbt": "Search",
-    "buybt": "BUYINFO"
+    "buybt": "BUYINFO",
+
+    "format": "Format",
+    "binding": "Binding",
+    "Sort": "分类",
+    "Pages": "分页"
   }
 }

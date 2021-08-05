@@ -10,6 +10,7 @@ import {MatRadioChange} from '@angular/material/radio';
 import {FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
 import {Router} from '@angular/router';
+import { GlobalService } from '../models/GlobalService';
 
 @Component({
     selector: 'app-main',
@@ -31,7 +32,7 @@ export class MainComponent implements OnInit, OnDestroy {
     private values: String = '';
     private almaList: any;
     private _almaBooklist: any;
-    private boxSize = false;
+    private boxSize = GlobalService.boxSize;
     private _almabooktypes: any;
     private publish = '';
     private publishyear = '';
@@ -41,7 +42,8 @@ export class MainComponent implements OnInit, OnDestroy {
     private totals:any;
     private sortOnMark = '';
     private apikey = "562930543E3E090957C595704CF28BE4";
-    private libcode = "233030";
+    private libcode:any;
+    lang:boolean = false;
 
     constructor(
         private restService: CloudAppRestService,
@@ -56,42 +58,58 @@ export class MainComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        let meta = document.createElement('meta')
+        let firstChild = document.head.firstChild
+        meta.name = "referrer"
+        meta.content = "no-referrer"
+        document.head.insertBefore(meta, firstChild)
         this.eventsService.getInitData().subscribe(data=> {
+            console.log(data.lang === 'en')
+            if(data.lang === 'en'){
+                this.lang = false
+            }else{
+                this.lang = true
+            }
+            console.log(this.lang)
             this.libcode = data.instCode
+            this.getCCKBbooklist('').then((res: any) => {
+                this.loading = false;
+                // let results = res.datalist;
+                let results = res
+                this.almaBooklist = results
+                this.totals = results.total
+                // this.almaList = results.datalist
+                // let list = results || [];
+                // list.forEach((item, index) => {
+                //     let img = item.picfile.replace('http://cckb.lib.tsinghua.edu.cn',"https://api.exldevnetwork.net.cn/proxy")
+                //     item['imgs'] = img;
+                //     this.getCCKBpic(img).then((img:any)=>{
+                //         // console.log(img)
+                //     })
+                //     this.almaBooklist.push(item);
+                // });
+
+            })
+
         });
         //检测窗口大小
         window.onresize = () => {
             if (window.innerWidth > 450) {
-                this.boxSize = true;
+                GlobalService.boxSize = true;
                 this.pagenum = 1
             } else {
                 this.pagenum = 1
-                this.boxSize = false;
+                GlobalService.boxSize = false;
             }
+            this.boxSize = GlobalService.boxSize
         }
         this.pageLoad$ = this.eventsService.onPageLoad(this.onPageLoad);
-        this.getCCKBbooklist('').then((res: any) => {
-            this.loading = false;
-            // let results = res.datalist;
-            let results = res
-            this.almaBooklist = results
-            this.totals = results.total
-            // this.almaList = results.datalist
-            // let list = results || [];
-            // list.forEach((item, index) => {
-            //     let img = item.picfile.replace('http://cckb.lib.tsinghua.edu.cn',"https://api.exldevnetwork.net.cn/proxy")
-            //     item['imgs'] = img;
-            //     this.getCCKBpic(img).then((img:any)=>{
-            //         // console.log(img)
-            //     })
-            //     this.almaBooklist.push(item);
-            // });
 
-        })
         this.getAlmaBooktype().then((res: any) => {
             let result = res
             this.almabooktypes = result.almalist
         })
+
     }
 
     ngOnDestroy(): void {

@@ -9,6 +9,9 @@
         <li>{{'i18n.maintip2'|translate}}</li>
         <li>{{'i18n.maintip3'|translate}}</li>
     </ul>
+
+    <!--<meta name="referrer" content="no-referrer">-->
+
     <div class="small-box-content" *ngIf="!boxSize && !loading">
         <div class="input-group-btn">
         </div>
@@ -123,7 +126,12 @@
                                             style="width: 300px" (change)="searchtype()">
                                         <option [value]='0' > {{'i18n.all'|translate}}</option>
                                         <option *ngFor="let types of almabooktypes"
-                                                [value]="types.id"> {{types.chiname}}</option>
+                                                [value]="types.id">
+                                            <span *ngIf="lang">{{types.chiname }}</span>
+                                            <span *ngIf="!lang">{{types.engname }}</span>
+                                        </option>
+                                        <!--<option *ngFor="let types of almabooktypes"-->
+                                                <!--[value]="types.id" *ngIf="!lang"> {{types.chiname }}</option>-->
                                     </select>
                                 </div>
                             </div>

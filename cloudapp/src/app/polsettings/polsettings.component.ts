@@ -6,7 +6,8 @@ import {
     CloudAppRestService, CloudAppEventsService, Request, HttpMethod,
     Entity, PageInfo, RestErrorResponse, AlertService,EntityType
 } from '@exlibris/exl-cloudapp-angular-lib';
-
+import {PolInfo} from '../models/PolInfo';
+import {Router, ActivatedRoute} from '@angular/router';
 
 interface Mmsid {
     value?:string;
@@ -50,6 +51,11 @@ export class PolSettingsComponent implements OnInit, OnDestroy {
     private pageLoad$: Subscription;
     pageEntities: Entity[];
     private _apiResult: any;
+    private infolist : any;
+    private ownsValues:any;
+    private ownsDesc:any;
+    private noteValues:any;
+
     poLineInfo:any =  {
         currency:'',
         fund:'',
@@ -81,21 +87,41 @@ export class PolSettingsComponent implements OnInit, OnDestroy {
         desc:'Yuan Renminbi'
     }];
     settings:any = null;
+
+
     constructor(private restService: CloudAppRestService,
                 private eventsService: CloudAppEventsService,
                 private translate: TranslateService,
+                private activatedRoute: ActivatedRoute,
                 private alert: AlertService) { }
 
     ngOnInit() {
         this.eventsService.getInitData().subscribe(data=> {
             this.settings = data
-            this.pageLoad$ = this.eventsService.onPageLoad(this.onPageLoad);
+            // this.pageLoad$ = this.eventsService.onPageLoad(this.onPageLoad);
+            this.activatedRoute.queryParams.subscribe(param => {
+                this.infolist = JSON.parse(param.info);
+            })
+            this.resourceMetadata = this.infolist.resource_metadata
+            this.ownsValues = this.infolist.owner.value
+            this.ownsDesc = this.infolist.owner.desc
+            this.noteValues = this.infolist.note[0].note_text
+            this.price = this.infolist.price.sum
+            this.poLineInfo = {
+                currency:this.infolist.price.currency.value,
+                fund:this.infolist.fund_distribution[0].fund_code.value,
+                vendor:this.infolist.vendor.value
+            }
+            this.getFunds(this.settings.instCode)
+            this.getVendors(this.settings.instCode)
+            // this.getCollections(this.settings.instCode)
+
         });
 
     }
 
     ngOnDestroy(): void {
-        this.pageLoad$.unsubscribe();
+        // this.pageLoad$.unsubscribe();
     }
 
     get apiResult() {
@@ -114,7 +140,6 @@ export class PolSettingsComponent implements OnInit, OnDestroy {
             //if entity type is PO_LINE,display form
             if(entity.type === EntityType.PO_LINE) {
                 this.restService.call(entity.link).subscribe(result => {
-
                     if(result && result.resource_metadata) {
                         this.apiResult = result
                         this.resourceMetadata = result.resource_metadata
@@ -161,8 +186,9 @@ export class PolSettingsComponent implements OnInit, OnDestroy {
         let vendorsIndex = this.vendors.findIndex((item)=>{
             return this.poLineInfo.vendor===item.code
         })
+
         let requestBody = value;
-        let status = requestBody.status.value
+        // let status = requestBody.status.value
         let index = requestBody.location.findIndex((item)=>{
             let copyindex =  item.copy.findIndex(copyItem=>{
                 return copyItem.receive_date
@@ -195,9 +221,21 @@ export class PolSettingsComponent implements OnInit, OnDestroy {
                 item.fund_code.desc = this.funds[fundsIndex].name
             })
         }
+        if(this.ownsValues && this.ownsDesc){
+            requestBody.owner.value = this.ownsValues
+            requestBody.owner.desc = this.ownsDesc
+        }else{
+            this.alert.error('请完善订购分馆信息',{autoClose:true,delay:6000});
+            return
+        }
+
+        if(this.noteValues){
+            requestBody.note[0].note_text = this.noteValues
+        }
+
         if(window.confirm(this.translate.instant('i18n.UpdateConfirm'))) {
             this.loading = true;
-            this.cancelPolineRequest(requestBody,status);
+            this.cancelPolineRequest(requestBody);
         }
 
     }
@@ -214,29 +252,29 @@ export class PolSettingsComponent implements OnInit, OnDestroy {
         });
     }
     // cancel current poline and create a new poline.if poline status was cancelled,create new poline
-    private cancelPolineRequest(requestBody: any,status:any) {
-        let po_number = requestBody.po_number
-        let number = requestBody.number
-        let request: Request = {
-            url: this.pageEntities[0].link+"?reason=LIBRARY_CANCELLED",
-            method: HttpMethod.DELETE
-        };
+    private cancelPolineRequest(requestBody: any) {
+        // let po_number = requestBody.po_number
+        // let number = requestBody.number
+        // let request: Request = {
+        //     url: this.pageEntities[0].link+"?reason=LIBRARY_CANCELLED",
+        //     method: HttpMethod.DELETE
+        // };
 
-        if(status==="CANCELLED") {
+        // if(status==="CANCELLED") {
             this.createPolineRequest(requestBody);
-        }else{
-            this.restService.call(request).subscribe({
-                next: result => {
-                    this.createPolineRequest(requestBody);
-                },
-                error: (e: RestErrorResponse) => {
-                    this.alert.error('Failed to cancel POL,po_number:'+po_number+",number:"+number,{autoClose:true,delay:6000});
-                    this.alert.error('error:'+e.message,{autoClose:true,delay:6000});
-                    console.error(e);
-                    this.loading = false;
-                }
-            });
-        }
+        // }else{
+        //     this.restService.call(request).subscribe({
+        //         next: result => {
+        //             this.createPolineRequest(requestBody);
+        //         },
+        //         error: (e: RestErrorResponse) => {
+        //             this.alert.error('Failed to cancel POL,po_number:'+po_number+",number:"+number,{autoClose:true,delay:6000});
+        //             this.alert.error('error:'+e.message,{autoClose:true,delay:6000});
+        //             console.error(e);
+        //             this.loading = false;
+        //         }
+        //     });
+        // }
 
     }
     // get vendor list
@@ -250,12 +288,12 @@ export class PolSettingsComponent implements OnInit, OnDestroy {
                 let index = result.vendor.findIndex((item)=>{
                     return this.poLineInfo.fund===item.code
                 })
-                if(index == -1) {
-                    result.vendor.push({
-                        code:this._apiResult.vendor.value,
-                        name:this._apiResult.vendor.desc
-                    })
-                }
+                // if(index == -1) {
+                //     result.vendor.push({
+                //         code:this._apiResult.vendor.value,
+                //         name:this._apiResult.vendor.desc
+                //     })
+                // }
                 this.vendors = result.vendor;
             },
             error: (e: RestErrorResponse) => {
@@ -292,12 +330,32 @@ export class PolSettingsComponent implements OnInit, OnDestroy {
             }
         });
     }
+
+    private getCollections(library:any) {
+        let request: Request = {
+            url: '/almaws/v1/bibs/collections',
+            method: HttpMethod.GET
+        };
+        this.restService.call(request).subscribe({
+            next: result => {
+                console.log(result)
+
+            },
+            error: (e: RestErrorResponse) => {
+                this.alert.error('get fund list fail,library:'+library,{autoClose:true,delay:6000});
+                this.alert.error('error:'+e.message,{autoClose:true,delay:6000});
+                console.error(e);
+                this.loading = false;
+            }
+        });
+    }
+
     // create new poline and search poline-number
     private createPolineRequest(requestBody:any) {
-        let po_number = requestBody.po_number
-        let number = requestBody.number
-        delete requestBody.number
-        delete requestBody.po_number
+        // let po_number = requestBody.po_number
+        // let number = requestBody.number
+        // delete requestBody.number
+        // delete requestBody.po_number
         let request: Request = {
             url: '/almaws/v1/acq/po-lines',
             method: HttpMethod.POST,
@@ -317,8 +375,8 @@ export class PolSettingsComponent implements OnInit, OnDestroy {
                 // this.refreshPage();
             },
             error: (e: RestErrorResponse) => {
-                this.alert.error('Failed to create new POL,po_number:'+po_number+",number:"+number,{autoClose:true,delay:6000});
-                this.alert.error('error:'+e.message,{autoClose:true,delay:6000});
+                // this.alert.error('Failed to create new POL,po_number:'+po_number+",number:"+number,{autoClose:true,delay:6000});
+                this.alert.error('error:'+e.message,{autoClose:true,delay:10000});
                 console.error(e);
                 this.loading = false;
             }

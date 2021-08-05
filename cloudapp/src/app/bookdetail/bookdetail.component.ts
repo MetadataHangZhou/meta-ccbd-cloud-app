@@ -8,6 +8,8 @@ import {
     Entity, PageInfo, RestErrorResponse, AlertService, CloudAppSettingsService, EntityType, FormGroupUtil
 } from '@exlibris/exl-cloudapp-angular-lib';
 import {Router, ActivatedRoute} from '@angular/router';
+import {GlobalService} from "../models/GlobalService";
+import {PolInfo} from "../models/PolInfo";
 
 
 @Component({
@@ -27,6 +29,7 @@ export class BookdetailComponent implements OnInit, OnDestroy {
     private cfmarcstr: String = '';
     private isTab = false
     hasApiResult: boolean = false;
+    private boxSize = GlobalService.boxSize;
     choosebt: boolean = false; //the judege button is 'Update' or 'Rebuild'
     ifCNor21: boolean = false;
     show: boolean = false;
@@ -34,6 +37,7 @@ export class BookdetailComponent implements OnInit, OnDestroy {
     private tabIndex = 0;
     private isShowInfo = false;
     private libcode = "233030";
+    private metadata:any;
 
     constructor(private restService: CloudAppRestService,
                 private eventsService: CloudAppEventsService,
@@ -49,6 +53,15 @@ export class BookdetailComponent implements OnInit, OnDestroy {
         this.eventsService.getInitData().subscribe(data=> {
             this.libcode = data.instCode
         });
+        //检测窗口大小
+        window.onresize = () => {
+            if (window.innerWidth > 450) {
+                GlobalService.boxSize = true;
+            } else {
+                GlobalService.boxSize = false;
+            }
+            this.boxSize = GlobalService.boxSize
+        }
         this.pageLoad$ = this.eventsService.onPageLoad(this.onPageLoad);
         this.activatedRoute.queryParams.subscribe(param => {
             this.getCCKBbookdetail(param.id).then((res: any) => {
@@ -59,9 +72,6 @@ export class BookdetailComponent implements OnInit, OnDestroy {
                     this.cfmarcstr = newstr
                 }
                 this.bookInfo = res.almalist
-
-
-
             })
         })
     }
@@ -135,7 +145,23 @@ export class BookdetailComponent implements OnInit, OnDestroy {
     }
 
     createpol(value:any){
-        this.router.navigate(['/polsettings'])
+        let info = new PolInfo();
+        //创建订单信息中的 resource_metadata
+        this.metadata = {
+                "title":this.bookInfo.booktitle,
+                "author":this.bookInfo.author,
+                "issn":null,
+                "isbn":this.bookInfo.isbn,
+                "publisher":this.bookInfo.publish,
+                "publication_place":"",
+                "publication_year":this.bookInfo.publishdate.substring(0,4),
+                "vendor_title_number":"",
+                "system_control_number":[""]
+        }
+        info.resource_metadata = this.metadata
+        info.price.sum = this.bookInfo.bookprice
+
+        this.router.navigate(['/polsettings'],{queryParams:{info:JSON.stringify(info)}})
     }
 
     updatebid(value:any){
