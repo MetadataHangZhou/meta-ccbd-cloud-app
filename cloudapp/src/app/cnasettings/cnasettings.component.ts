@@ -9,6 +9,7 @@ import {
 } from '@exlibris/exl-cloudapp-angular-lib';
 import {Cnmarc} from '../models/cnmarc';
 import {Marc21} from "../models/marc21";
+import {PolInfo} from "../models/PolInfo";
 
 @Component({
     selector: 'app-cnasettings',
@@ -99,7 +100,9 @@ export class CnaSettingsComponent implements OnInit, OnDestroy {
             if (entity.type === EntityType.BIB_MMS) {
                 this.restService.call(entity.link).subscribe(result => {
                     this.apiResult = result
-                    this.parseRes(this.apiResult)
+                    let pol = new PolInfo()
+                    // this.parseRes(this.apiResult)
+                    this.parseRes(pol.xml_marc21)
                 });
             }
 
@@ -177,32 +180,38 @@ export class CnaSettingsComponent implements OnInit, OnDestroy {
 
 
     parseRes(value:any){
-        //parse api for page
-        let anies = value.anies[0]
-        const doc = new DOMParser().parseFromString(anies, "application/xml");
-        let field100='';
+        // console.log(value)
+        // parse api for page
+        // let anies = value.anies[0]
+        // const doc = new DOMParser().parseFromString(anies, "application/xml");
+        // let field100='';
         // console.log(doc)
-        //extract the data in field "ldr"
-        let fieldldr = doc.getElementsByTagName("leader")[0].innerHTML
-        // console.log(fieldldr.substring(7,8))
+        // //extract the data in field "ldr"
+        // let fieldldr = doc.getElementsByTagName("leader")[0].innerHTML
+        // // console.log(fieldldr.substring(7,8))
+        //
+        // //extract the data in field "100"
+        // Array.from(doc.getElementsByTagName("datafield")).forEach(datafield =>{
+        //     if(datafield.getAttribute("tag") == '100'){
+        //         Array.from(datafield.getElementsByTagName("subfield")).forEach(subfield => {
+        //             if ('a' == subfield.getAttribute("code")) {
+        //                 field100 = subfield.textContent
+        //             }
+        //         });
+        //
+        //     }
+        // })
+        //
+        // if(fieldldr.substring(7,8) == 'm' && field100.substring(22,25) == 'chi'){
+        //     //When conditions are unique, the year of publication must be carried
+        //     this.Publishedyear = true;
+        // }
+        //     this.year = field100.substring(9,13);
 
-        //extract the data in field "100"
-        Array.from(doc.getElementsByTagName("datafield")).forEach(datafield =>{
-            if(datafield.getAttribute("tag") == '100'){
-                Array.from(datafield.getElementsByTagName("subfield")).forEach(subfield => {
-                    if ('a' == subfield.getAttribute("code")) {
-                        field100 = subfield.textContent
-                    }
-                });
 
-            }
-        })
-
-        if(fieldldr.substring(7,8) == 'm' && field100.substring(22,25) == 'chi'){
-            //When conditions are unique, the year of publication must be carried
-            this.Publishedyear = true;
-        }
-            this.year = field100.substring(9,13);
+        // const doc = new DOMParser().parseFromString(value, "application/xml");
+        // let recordData = doc.getElementsByTagName("recordData")[0].innerHTML
+        // console.log(recordData)
     }
 
     // repair(value: any) { // complement by subfieldsize 0

@@ -64,13 +64,11 @@ export class MainComponent implements OnInit, OnDestroy {
         meta.content = "no-referrer"
         document.head.insertBefore(meta, firstChild)
         this.eventsService.getInitData().subscribe(data=> {
-            console.log(data.lang === 'en')
             if(data.lang === 'en'){
                 this.lang = false
             }else{
                 this.lang = true
             }
-            console.log(this.lang)
             this.libcode = data.instCode
             this.getCCKBbooklist('').then((res: any) => {
                 this.loading = false;
