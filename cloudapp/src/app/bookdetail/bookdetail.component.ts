@@ -26,18 +26,18 @@ export class BookdetailComponent implements OnInit, OnDestroy {
     pageEntities: Entity[];
     private _apiResult: any;
     private _bookInfo:any;
-    private cfmarcstr: String = '';
+    cfmarcstr: String = '';
     private isTab = false
     hasApiResult: boolean = false;
-    private boxSize = GlobalService.boxSize;
+    boxSize = GlobalService.boxSize;
     choosebt: boolean = false; //the judege button is 'Update' or 'Rebuild'
     ifCNor21: boolean = false;
     show: boolean = false;
     loading = true;
-    private tabIndex = 0;
-    private isShowInfo = false;
-    private libcode = "233030";
-    private metadata:any;
+    tabIndex = 0;
+    isShowInfo = false;
+    libcode = "233030";
+    metadata:any;
 
     constructor(private restService: CloudAppRestService,
                 private eventsService: CloudAppEventsService,
@@ -52,6 +52,17 @@ export class BookdetailComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.eventsService.getInitData().subscribe(data=> {
             this.libcode = data.instCode
+            this.activatedRoute.queryParams.subscribe(param => {
+                this.getCCKBbookdetail(param.id).then((res: any) => {
+                    this.loading = false;
+                    if(res.almalist.marc21str){
+                        var reg = new RegExp( 'src="images/bluemarc.png"' , "g" )
+                        var newstr = res.almalist.marc21str.replace( reg , `src='../../assets/blue.png'` );
+                        this.cfmarcstr = newstr
+                    }
+                    this.bookInfo = res.almalist
+                })
+            })
         });
         //检测窗口大小
         window.onresize = () => {
@@ -63,17 +74,6 @@ export class BookdetailComponent implements OnInit, OnDestroy {
             this.boxSize = GlobalService.boxSize
         }
         this.pageLoad$ = this.eventsService.onPageLoad(this.onPageLoad);
-        this.activatedRoute.queryParams.subscribe(param => {
-            this.getCCKBbookdetail(param.id).then((res: any) => {
-                this.loading = false;
-                if(res.almalist.marc21str){
-                    var reg = new RegExp( 'src="images/bluemarc.png"' , "g" )
-                    var newstr = res.almalist.marc21str.replace( reg , `src='../../assets/blue.png'` );
-                    this.cfmarcstr = newstr
-                }
-                this.bookInfo = res.almalist
-            })
-        })
     }
 
     ngOnDestroy(): void {

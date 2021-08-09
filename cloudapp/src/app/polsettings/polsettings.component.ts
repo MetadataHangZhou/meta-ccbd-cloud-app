@@ -51,10 +51,10 @@ export class PolSettingsComponent implements OnInit, OnDestroy {
     private pageLoad$: Subscription;
     pageEntities: Entity[];
     private _apiResult: any;
-    private infolist : any;
-    private ownsValues:any;
-    private ownsDesc:any;
-    private noteValues:any;
+    infolist : any;
+    ownsValues:any;
+    ownsDesc:any;
+    noteValues:any;
 
     poLineInfo:any =  {
         currency:'',
