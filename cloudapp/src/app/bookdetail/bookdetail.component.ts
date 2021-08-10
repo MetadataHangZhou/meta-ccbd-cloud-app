@@ -144,7 +144,7 @@ export class BookdetailComponent implements OnInit, OnDestroy {
         history.back()
     }
 
-    createpol(value:any){
+    createpol(){
         let info = new PolInfo();
         //创建订单信息中的 resource_metadata
         this.metadata = {
