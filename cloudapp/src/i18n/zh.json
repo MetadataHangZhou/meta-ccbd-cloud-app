@@ -72,6 +72,11 @@
     "format": "开本",
     "binding": "装帧",
     "sort": "分类",
-    "pages": "分页"
+    "pages": "分页",
+    "booklists": "常用书单",
+    "owns": "订购单位",
+    "librarys": "图书馆",
+    "notes": "备注",
+    "createbt":"创建"
   }
 }

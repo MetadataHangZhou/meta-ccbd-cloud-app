@@ -71,7 +71,12 @@
 
     "format": "Format",
     "binding": "Binding",
-    "Sort": "分类",
-    "Pages": "分页"
+    "sort": "Sort",
+    "pages": "Pages",
+    "booklists": "BookList",
+    "owns": "Order units",
+    "librarys": "Library",
+    "notes": "Notes",
+    "createbt":"Create"
   }
 }

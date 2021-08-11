@@ -80,7 +80,7 @@
         <div class="bookinfo-content">
             <div style="display: flex;justify-content: space-between;">
                 <div class="book-info" style="flex:1;margin-right: 20px">
-                    <div class="book-info-img-large">
+                    <div class="book-info-img-large"  (click)="openLargePic()">
                         <div class="imgBox-large">
                             <img class="cover" [src]="bookInfo.picfile" alt=""  (error)="imgerror($event)"/>
                         </div>
@@ -162,4 +162,8 @@
         <mat-spinner diameter="50"></mat-spinner>
     </div>
 </ng-container>
-
+<div class="large-img-pic" *ngIf="showLargePic" (click)="openLargePic()">
+    <div class="imgBox-large-all">
+        <img class="cover-all" [src]="bookInfo.picfile" alt=""  (error)="imgerror($event)"/>
+    </div>
+</div>

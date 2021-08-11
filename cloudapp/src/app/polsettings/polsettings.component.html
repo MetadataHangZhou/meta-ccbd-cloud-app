@@ -8,11 +8,11 @@
             </mat-card-header>
             <mat-card-content>
                 <mat-form-field class="poline-form" style="line-height: 35px;width: 100%">
-                    <mat-label>订购单位</mat-label>
+                    <mat-label>{{'i18n.owns'|translate}}</mat-label>
                     <input matInput placeholder="" [(ngModel)]="ownsValues">
                 </mat-form-field>
                 <mat-form-field class="poline-form" style="line-height: 35px;width: 100%">
-                    <mat-label>图书馆</mat-label>
+                    <mat-label>{{'i18n.librarys'|translate}}</mat-label>
                     <input matInput placeholder="" [(ngModel)]="ownsDesc">
                 </mat-form-field>
                 <mat-form-field class="poline-form" style="line-height: 35px;width: 100%">
@@ -37,11 +37,11 @@
                     </mat-select>
                 </mat-form-field>
                 <mat-form-field class="poline-form" style="line-height: 35px;width: 100%">
-                    <mat-label>备注</mat-label>
+                    <mat-label>{{'i18n.notes'|translate}}</mat-label>
                     <input matInput placeholder="" [(ngModel)]="noteValues">
                 </mat-form-field>
             </mat-card-content>
-            <button mat-flat-button type="button" color="primary" (click)="update(infolist)" [disabled]="loading && funds.length>0 && vendors.length>0">下订</button>
+            <button mat-flat-button type="button" color="primary" (click)="update(infolist)" [disabled]="loading && funds.length>0 && vendors.length>0">{{'i18n.createbt'|translate}}</button>
             <!--<div class="desc">{{'i18n.UpdateDesc'|translate}}</div>-->
         </mat-card>
     </section>

@@ -131,3 +131,30 @@
   }
 
 }
+
+.large-img-pic{
+  position: absolute;
+  width: 400px;
+  height:400px;
+  left: -800px;
+  padding: 20px 0;
+  top: 40px;
+  right: 50px;
+  margin: auto;
+
+}
+
+.imgBox-large-all{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height:100%;
+  position: relative;
+
+  img {
+    max-height: 376px;
+    width: auto;
+    max-width: 416px
+  }
+}

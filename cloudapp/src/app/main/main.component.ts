@@ -293,6 +293,7 @@ export class MainComponent implements OnInit, OnDestroy {
     }
 
     searchtype() {
+        this.values = ''
         this.getCCKBbooklist(this.values).then((res: any) => {
             this.almaBooklist = res
             // this.almaList = res.datalist

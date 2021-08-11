@@ -38,6 +38,7 @@ export class BookdetailComponent implements OnInit, OnDestroy {
     isShowInfo = false;
     libcode = "233030";
     metadata:any;
+    showLargePic = false;
 
     constructor(private restService: CloudAppRestService,
                 private eventsService: CloudAppEventsService,
@@ -179,6 +180,10 @@ export class BookdetailComponent implements OnInit, OnDestroy {
 
     buypop(){
         this.isShowInfo = !this.isShowInfo
+    }
+
+    openLargePic(){
+        this.showLargePic = !this.showLargePic;
     }
 }
 
