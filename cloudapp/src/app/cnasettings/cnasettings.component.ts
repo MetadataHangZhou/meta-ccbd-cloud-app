@@ -102,7 +102,7 @@ export class CnaSettingsComponent implements OnInit, OnDestroy {
                     this.apiResult = result
                     let pol = new PolInfo()
                     // this.parseRes(this.apiResult)
-                    this.parseRes(pol.xml_marc21)
+                    // this.parseRes(pol.xml_marc21)
                 });
             }
 

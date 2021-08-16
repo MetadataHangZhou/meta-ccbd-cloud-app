@@ -10,7 +10,7 @@
     "ClassificationNumberSubfield": "分类号子字段",
     "SubfieldOfSpeciesNumber": "种次号子字段",
     "CallNumberSubfield": "索书号子字段",
-    "Rebuild": "更新BID",
+    "Rebuild": "更新BIB",
     "Update": "创建POL",
     "Rebuild1": "重新生成",
     "Update1": "新建",

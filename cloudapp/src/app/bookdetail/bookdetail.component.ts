@@ -39,6 +39,7 @@ export class BookdetailComponent implements OnInit, OnDestroy {
     libcode = "233030";
     metadata:any;
     showLargePic = false;
+    mmsid = '';
 
     constructor(private restService: CloudAppRestService,
                 private eventsService: CloudAppEventsService,
@@ -103,10 +104,12 @@ export class BookdetailComponent implements OnInit, OnDestroy {
         if ((pageInfo.entities || []).length == 1) {
             const entity = pageInfo.entities[0];
             if (entity.type === EntityType.BIB_MMS) {
-                // this.restService.call(entity.link).subscribe(result => {
-                //     this.apiResult = result
-                //     // this.parseRes(this.apiResult)
-                // });
+                this.restService.call(entity.link).subscribe(result => {
+                    this.apiResult = result
+                    this.mmsid = this.apiResult.mms_id
+                    // this.parseRes(this.apiResult)
+                });
+
                 this.show = true;
                 //是否显示更新bid的按钮
             }
@@ -165,8 +168,49 @@ export class BookdetailComponent implements OnInit, OnDestroy {
         this.router.navigate(['/polsettings'],{queryParams:{info:JSON.stringify(info)}})
     }
 
-    updatebid(value:any){
-        this.router.navigate(['/cnasettings'])
+    updatebid(){
+        // this.router.navigate(['/cnasettings'])
+        //更新bib
+        this.eventsService.getAuthToken().subscribe(
+            data => {
+                this.http.get(`https://api.exldevnetwork.net.cn/proxy/sru/sruMarc_marc21?operation=searchRetrieve&recordSchema=marcxml&version=1.2&startRecord=1&maximumRecords=10&query=isbn+%3D+"9787305232459"+`, {
+                    headers: {
+                        'X-Proxy-Host': 'https://cckb.lib.tsinghua.edu.cn',
+                        'Authorization': 'Bearer ' + data
+                    }
+                }).subscribe(res=>{
+                    console.log(res)
+
+                    // const doc = new DOMParser().parseFromString(value, "application/xml");
+                    // let recordData = doc.getElementsByTagName("recordData")[0].innerHTML
+                    // console.log(recordData)
+
+                })
+            }
+        );
+
+        // let request: Request = {
+        //     url: `/almaws/v1/bibs/${this.mmsid}`,
+        //     method: HttpMethod.PUT,
+        //     headers: {
+        //         "Content-Type": "application/xml",
+        //         Accept: "application/json"
+        //     },
+        //     requestBody: `<bib>${anies}</bib>`,
+        // };
+        // this.restService.call(request).subscribe({
+        //     next: result => {
+        //
+        //     },
+        //     error: (e: RestErrorResponse) => {
+        //         // this.alert.error(this.translate.instant('i18n.errorupdate'), {autoClose: true, delay: 3000});
+        //         // console.error(e);
+        //         // this.loading = false;
+        //     }
+        // });
+
+
+
     }
 
     imgerror(e){
