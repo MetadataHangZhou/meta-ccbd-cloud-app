@@ -7,175 +7,188 @@
     </section>
 </section>
 <section >
+    <div style="display: inline-flex;flex-direction: column;">
+    <div class = "tp-selected-value">
+        Selected record format: {{favoriteSeason}}
+    </div>
+    <mat-radio-group class = "tp-radio-group" [(ngModel)] = "favoriteSeason" style="margin-top: 10px">
+        <mat-radio-button class = "tp-radio-button"
+                          *ngFor = "let season of seasons" [value] = "season">
+            {{season}}
+        </mat-radio-button>
+    </mat-radio-group>
+    <button style="margin-top: 50px" mat-raised-button color="primary" (click)="saved()"
+    >{{'i18n.save'|translate}}</button>
+    </div>
     <!--<div *ngif="hasApiResult">-->
-    <div class="chooseCNor21" style="text-align: center;display: flex;align-items: center;justify-content: center;" *ngIf="hasApiResult || loading">
-        <button class="cnmarc-btn" style="flex:1;" (click)="chooseCN21()">
-            <div *ngIf="!ifCNor21" style="color: red">CNMARC</div>
-            <div *ngIf="ifCNor21" >CNMARC</div>
-        </button>
-        <div style="padding: 5px"></div>
-        <button class="cnmarc-btn" style="flex:1;" (click)="chooseCN21()">
-            <div *ngIf="ifCNor21" style="color: red">MARC21</div>
-            <div *ngIf="!ifCNor21" >MARC21</div>
-        </button>
-    </div>
-    <form [formGroup]="form" *ngIf="hasApiResult && !ifCNor21">
-        <mat-card class="example-card">
-            <mat-card-content>
-                <mat-form-field class="example-full-width">
-                    <mat-label>{{'i18n.UserCode'|translate}}</mat-label>
-                    <!--[value]="form.value.institution"-->
-                    <input matInput [value]="form.value.institution" formControlName="institution">
-                </mat-form-field>
-                <mat-form-field class="example-full-width">
-                    <mat-label>{{'i18n.CallNumberEnquiry'|translate}}</mat-label>
-                    <input matInput [value]="form.value.lookupUrl" formControlName="lookupUrl">
-                </mat-form-field>
+    <!--<div class="chooseCNor21" style="text-align: center;display: flex;align-items: center;justify-content: center;" *ngIf="hasApiResult || loading">-->
+        <!--<button class="cnmarc-btn" style="flex:1;" (click)="chooseCN21()">-->
+            <!--<div *ngIf="!ifCNor21" style="color: red">CNMARC</div>-->
+            <!--<div *ngIf="ifCNor21" >CNMARC</div>-->
+        <!--</button>-->
+        <!--<div style="padding: 5px"></div>-->
+        <!--<button class="cnmarc-btn" style="flex:1;" (click)="chooseCN21()">-->
+            <!--<div *ngIf="ifCNor21" style="color: red">MARC21</div>-->
+            <!--<div *ngIf="!ifCNor21" >MARC21</div>-->
+        <!--</button>-->
+    <!--</div>-->
+    <!--<form [formGroup]="form" *ngIf="hasApiResult && !ifCNor21">-->
+        <!--<mat-card class="example-card">-->
+            <!--<mat-card-content>-->
                 <!--<mat-form-field class="example-full-width">-->
-                <!--<mat-label>{{'i18n.CallNumberQueryType'|translate}}</mat-label>-->
-                <!--<input matInput [(ngModel)]="settings.lookupPrefix">-->
+                    <!--<mat-label>{{'i18n.UserCode'|translate}}</mat-label>-->
+                    <!--&lt;!&ndash;[value]="form.value.institution"&ndash;&gt;-->
+                    <!--<input matInput [value]="form.value.institution" formControlName="institution">-->
                 <!--</mat-form-field>-->
-                <mat-form-field class="example-full-width">
-                    <mat-label>{{'i18n.call-nosub'|translate}}
-                        <span style="color: red">*</span></mat-label>
-                    <input matInput [value]="form.value.classification" formControlName="classification">
-                </mat-form-field>
-                <mat-form-field class="example-full-width">
-                    <mat-label>{{'i18n.Collectionfield'|translate}}
-                        <span style="color: red">*</span>
-                    </mat-label>
-                    <input matInput [value]="form.value.holding" formControlName="holding" maxlength="3">
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>{{'i18n.subfieldsize'|translate}}</mat-label>
-                    <mat-select formControlName="subfieldsize">
-                        <mat-option [value]="0">{{'i18n.zero'|translate}}</mat-option>
-                        <mat-option [value]="3">3 {{'i18n.digits'|translate}}</mat-option>
-                        <mat-option [value]="4">4 {{'i18n.digits'|translate}}</mat-option>
-                        <mat-option [value]="5">5 {{'i18n.digits'|translate}}</mat-option>
-                        <mat-option [value]="6">6 {{'i18n.digits'|translate}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field class="example-full-width">
-                    <mat-label>{{'i18n.UserCodefile'|translate}}（$）</mat-label>
-                    <input matInput [value]="form.value.institutionType" formControlName="institutionType"
-                           maxlength="1">
-                </mat-form-field>
-                <mat-form-field class="example-full-width">
-                    <mat-label>{{'i18n.ClassificationNumberSubfield'|translate}}（$）
-                        <span style="color: red">*</span>
-                    </mat-label>
-                    <input matInput [value]="form.value.classificationNumber" formControlName="classificationNumber"
-                           maxlength="1">
-                </mat-form-field>
-                <mat-form-field class="example-full-width">
-                    <mat-label>{{'i18n.SubfieldOfSpeciesNumber'|translate}}（$）
-                        <span style="color: red">*</span>
-                    </mat-label>
-                    <input matInput [value]="form.value.titleNumber" formControlName="titleNumber" maxlength="1">
-                </mat-form-field>
-                <mat-form-field class="example-full-width">
-                    <mat-label>{{'i18n.CallNumberSubfield'|translate}}（$）
-                        <span style="color: red">*</span>
-                    </mat-label>
-                    <input matInput [value]="form.value.callNo" formControlName="callNo" maxlength="1">
-                </mat-form-field>
                 <!--<mat-form-field class="example-full-width">-->
-                    <!--<mat-checkbox formControlName="Publishedyear" [checked]="form.value.Publishedyear">出版年</mat-checkbox>-->
+                    <!--<mat-label>{{'i18n.CallNumberEnquiry'|translate}}</mat-label>-->
+                    <!--<input matInput [value]="form.value.lookupUrl" formControlName="lookupUrl">-->
                 <!--</mat-form-field>-->
-                <section class="settings-year">
-                    <mat-checkbox formControlName="Publishedyear">
-                        <label style="white-space: normal;line-height: 1.5em;">{{'i18n.Publishedyear'|translate}}</label>
-                    </mat-checkbox>
-                </section>
-            </mat-card-content>
-            <button style="margin-right: 10px;" mat-raised-button color="primary" (click)="saved()" [disabled]="!hasApiResult || loading"
-            >{{'i18n.save'|translate}}</button>
-            <button style="margin-right: 10px;" mat-raised-button color="primary" (click)="setSettings(true)"
-                    [disabled]="!hasApiResult || loading"
-            >{{'i18n.Update1'|translate}}</button>
-            <button mat-raised-button color="primary" (click)="setSettings(false)" [disabled]="!hasApiResult || loading"
-            >{{'i18n.Rebuild1'|translate}}</button>
-        </mat-card>
-    </form>
-    <form [formGroup]="form21" *ngIf="hasApiResult && ifCNor21">
-        <mat-card class="example-card">
-            <mat-card-content>
-                <mat-form-field class="example-full-width">
-                    <mat-label>{{'i18n.UserCode'|translate}}</mat-label>
-                    <!--[value]="form.value.institution"-->
-                    <input matInput [value]="form21.value.institution" formControlName="institution">
-                </mat-form-field>
-                <mat-form-field class="example-full-width">
-                    <mat-label>{{'i18n.CallNumberEnquiry'|translate}}</mat-label>
-                    <input matInput [value]="form21.value.lookupUrl" formControlName="lookupUrl">
-                </mat-form-field>
+                <!--&lt;!&ndash;<mat-form-field class="example-full-width">&ndash;&gt;-->
+                <!--&lt;!&ndash;<mat-label>{{'i18n.CallNumberQueryType'|translate}}</mat-label>&ndash;&gt;-->
+                <!--&lt;!&ndash;<input matInput [(ngModel)]="settings.lookupPrefix">&ndash;&gt;-->
+                <!--&lt;!&ndash;</mat-form-field>&ndash;&gt;-->
                 <!--<mat-form-field class="example-full-width">-->
-                <!--<mat-label>{{'i18n.CallNumberQueryType'|translate}}</mat-label>-->
-                <!--<input matInput [(ngModel)]="settings.lookupPrefix">-->
+                    <!--<mat-label>{{'i18n.call-nosub'|translate}}-->
+                        <!--<span style="color: red">*</span></mat-label>-->
+                    <!--<input matInput [value]="form.value.classification" formControlName="classification">-->
                 <!--</mat-form-field>-->
-                <mat-form-field class="example-full-width">
-                    <mat-label>{{'i18n.call-nosub'|translate}}
-                        <span style="color: red">*</span></mat-label>
-                    <input matInput [value]="form21.value.classification" formControlName="classification">
-                </mat-form-field>
-                <mat-form-field class="example-full-width">
-                    <mat-label>{{'i18n.Collectionfield'|translate}}
-                        <span style="color: red">*</span>
-                    </mat-label>
-                    <input matInput [value]="form21.value.holding" formControlName="holding" maxlength="3">
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>{{'i18n.subfieldsize'|translate}}</mat-label>
-                    <mat-select formControlName="subfieldsize">
-                        <mat-option [value]="0">{{'i18n.zero'|translate}}</mat-option>
-                        <mat-option [value]="3">3 {{'i18n.digits'|translate}}</mat-option>
-                        <mat-option [value]="4">4 {{'i18n.digits'|translate}}</mat-option>
-                        <mat-option [value]="5">5 {{'i18n.digits'|translate}}</mat-option>
-                        <mat-option [value]="6">6 {{'i18n.digits'|translate}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field class="example-full-width">
-                    <mat-label>{{'i18n.UserCodefile'|translate}}（$）</mat-label>
-                    <input matInput [value]="form21.value.institutionType" formControlName="institutionType"
-                           maxlength="1">
-                </mat-form-field>
-                <mat-form-field class="example-full-width">
-                    <mat-label>{{'i18n.ClassificationNumberSubfield'|translate}}（$）
-                        <span style="color: red">*</span>
-                    </mat-label>
-                    <input matInput [value]="form21.value.classificationNumber" formControlName="classificationNumber"
-                           maxlength="1">
-                </mat-form-field>
-                <mat-form-field class="example-full-width">
-                    <mat-label>{{'i18n.SubfieldOfSpeciesNumber'|translate}}（$）
-                        <span style="color: red">*</span>
-                    </mat-label>
-                    <input matInput [value]="form21.value.titleNumber" formControlName="titleNumber" maxlength="1">
-                </mat-form-field>
-                <mat-form-field class="example-full-width">
-                    <mat-label>{{'i18n.CallNumberSubfield'|translate}}（$）
-                        <span style="color: red">*</span>
-                    </mat-label>
-                    <input matInput [value]="form21.value.callNo" formControlName="callNo" maxlength="1">
-                </mat-form-field>
                 <!--<mat-form-field class="example-full-width">-->
-                    <!--<mat-checkbox [value]="form.value.Publishedyear" formControlName="Publishedyear">出版年</mat-checkbox>-->
+                    <!--<mat-label>{{'i18n.Collectionfield'|translate}}-->
+                        <!--<span style="color: red">*</span>-->
+                    <!--</mat-label>-->
+                    <!--<input matInput [value]="form.value.holding" formControlName="holding" maxlength="3">-->
                 <!--</mat-form-field>-->
-            </mat-card-content>
-            <button style="margin-right: 10px;" mat-raised-button color="primary" (click)="saved()" [disabled]="!hasApiResult || loading"
-            >{{'i18n.save'|translate}}</button>
-            <!--<div>-->
-                <button style="margin-right: 10px" mat-raised-button color="primary" (click)="setSettings(true)"
-                        [disabled]="!hasApiResult || loading"
-                >{{'i18n.Update1'|translate}}</button>
-                <button mat-raised-button color="primary" (click)="setSettings(false)" [disabled]="!hasApiResult || loading"
-                >{{'i18n.Rebuild1'|translate}}</button>
-            <!--</div>-->
-        </mat-card>
-    </form>
-    <div *ngIf="!hasApiResult">
-        <h1 class="tip">{{'i18n.NoCNATip'|translate}}</h1>
-    </div>
+                <!--<mat-form-field>-->
+                    <!--<mat-label>{{'i18n.subfieldsize'|translate}}</mat-label>-->
+                    <!--<mat-select formControlName="subfieldsize">-->
+                        <!--<mat-option [value]="0">{{'i18n.zero'|translate}}</mat-option>-->
+                        <!--<mat-option [value]="3">3 {{'i18n.digits'|translate}}</mat-option>-->
+                        <!--<mat-option [value]="4">4 {{'i18n.digits'|translate}}</mat-option>-->
+                        <!--<mat-option [value]="5">5 {{'i18n.digits'|translate}}</mat-option>-->
+                        <!--<mat-option [value]="6">6 {{'i18n.digits'|translate}}</mat-option>-->
+                    <!--</mat-select>-->
+                <!--</mat-form-field>-->
+                <!--<mat-form-field class="example-full-width">-->
+                    <!--<mat-label>{{'i18n.UserCodefile'|translate}}（$）</mat-label>-->
+                    <!--<input matInput [value]="form.value.institutionType" formControlName="institutionType"-->
+                           <!--maxlength="1">-->
+                <!--</mat-form-field>-->
+                <!--<mat-form-field class="example-full-width">-->
+                    <!--<mat-label>{{'i18n.ClassificationNumberSubfield'|translate}}（$）-->
+                        <!--<span style="color: red">*</span>-->
+                    <!--</mat-label>-->
+                    <!--<input matInput [value]="form.value.classificationNumber" formControlName="classificationNumber"-->
+                           <!--maxlength="1">-->
+                <!--</mat-form-field>-->
+                <!--<mat-form-field class="example-full-width">-->
+                    <!--<mat-label>{{'i18n.SubfieldOfSpeciesNumber'|translate}}（$）-->
+                        <!--<span style="color: red">*</span>-->
+                    <!--</mat-label>-->
+                    <!--<input matInput [value]="form.value.titleNumber" formControlName="titleNumber" maxlength="1">-->
+                <!--</mat-form-field>-->
+                <!--<mat-form-field class="example-full-width">-->
+                    <!--<mat-label>{{'i18n.CallNumberSubfield'|translate}}（$）-->
+                        <!--<span style="color: red">*</span>-->
+                    <!--</mat-label>-->
+                    <!--<input matInput [value]="form.value.callNo" formControlName="callNo" maxlength="1">-->
+                <!--</mat-form-field>-->
+                <!--&lt;!&ndash;<mat-form-field class="example-full-width">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<mat-checkbox formControlName="Publishedyear" [checked]="form.value.Publishedyear">出版年</mat-checkbox>&ndash;&gt;-->
+                <!--&lt;!&ndash;</mat-form-field>&ndash;&gt;-->
+                <!--<section class="settings-year">-->
+                    <!--<mat-checkbox formControlName="Publishedyear">-->
+                        <!--<label style="white-space: normal;line-height: 1.5em;">{{'i18n.Publishedyear'|translate}}</label>-->
+                    <!--</mat-checkbox>-->
+                <!--</section>-->
+            <!--</mat-card-content>-->
+            <!--<button style="margin-right: 10px;" mat-raised-button color="primary" (click)="saved()" [disabled]="!hasApiResult || loading"-->
+            <!--&gt;{{'i18n.save'|translate}}</button>-->
+            <!--<button style="margin-right: 10px;" mat-raised-button color="primary" (click)="setSettings(true)"-->
+                    <!--[disabled]="!hasApiResult || loading"-->
+            <!--&gt;{{'i18n.Update1'|translate}}</button>-->
+            <!--<button mat-raised-button color="primary" (click)="setSettings(false)" [disabled]="!hasApiResult || loading"-->
+            <!--&gt;{{'i18n.Rebuild1'|translate}}</button>-->
+        <!--</mat-card>-->
+    <!--</form>-->
+    <!--<form [formGroup]="form21" *ngIf="hasApiResult && ifCNor21">-->
+        <!--<mat-card class="example-card">-->
+            <!--<mat-card-content>-->
+                <!--<mat-form-field class="example-full-width">-->
+                    <!--<mat-label>{{'i18n.UserCode'|translate}}</mat-label>-->
+                    <!--&lt;!&ndash;[value]="form.value.institution"&ndash;&gt;-->
+                    <!--<input matInput [value]="form21.value.institution" formControlName="institution">-->
+                <!--</mat-form-field>-->
+                <!--<mat-form-field class="example-full-width">-->
+                    <!--<mat-label>{{'i18n.CallNumberEnquiry'|translate}}</mat-label>-->
+                    <!--<input matInput [value]="form21.value.lookupUrl" formControlName="lookupUrl">-->
+                <!--</mat-form-field>-->
+                <!--&lt;!&ndash;<mat-form-field class="example-full-width">&ndash;&gt;-->
+                <!--&lt;!&ndash;<mat-label>{{'i18n.CallNumberQueryType'|translate}}</mat-label>&ndash;&gt;-->
+                <!--&lt;!&ndash;<input matInput [(ngModel)]="settings.lookupPrefix">&ndash;&gt;-->
+                <!--&lt;!&ndash;</mat-form-field>&ndash;&gt;-->
+                <!--<mat-form-field class="example-full-width">-->
+                    <!--<mat-label>{{'i18n.call-nosub'|translate}}-->
+                        <!--<span style="color: red">*</span></mat-label>-->
+                    <!--<input matInput [value]="form21.value.classification" formControlName="classification">-->
+                <!--</mat-form-field>-->
+                <!--<mat-form-field class="example-full-width">-->
+                    <!--<mat-label>{{'i18n.Collectionfield'|translate}}-->
+                        <!--<span style="color: red">*</span>-->
+                    <!--</mat-label>-->
+                    <!--<input matInput [value]="form21.value.holding" formControlName="holding" maxlength="3">-->
+                <!--</mat-form-field>-->
+                <!--<mat-form-field>-->
+                    <!--<mat-label>{{'i18n.subfieldsize'|translate}}</mat-label>-->
+                    <!--<mat-select formControlName="subfieldsize">-->
+                        <!--<mat-option [value]="0">{{'i18n.zero'|translate}}</mat-option>-->
+                        <!--<mat-option [value]="3">3 {{'i18n.digits'|translate}}</mat-option>-->
+                        <!--<mat-option [value]="4">4 {{'i18n.digits'|translate}}</mat-option>-->
+                        <!--<mat-option [value]="5">5 {{'i18n.digits'|translate}}</mat-option>-->
+                        <!--<mat-option [value]="6">6 {{'i18n.digits'|translate}}</mat-option>-->
+                    <!--</mat-select>-->
+                <!--</mat-form-field>-->
+                <!--<mat-form-field class="example-full-width">-->
+                    <!--<mat-label>{{'i18n.UserCodefile'|translate}}（$）</mat-label>-->
+                    <!--<input matInput [value]="form21.value.institutionType" formControlName="institutionType"-->
+                           <!--maxlength="1">-->
+                <!--</mat-form-field>-->
+                <!--<mat-form-field class="example-full-width">-->
+                    <!--<mat-label>{{'i18n.ClassificationNumberSubfield'|translate}}（$）-->
+                        <!--<span style="color: red">*</span>-->
+                    <!--</mat-label>-->
+                    <!--<input matInput [value]="form21.value.classificationNumber" formControlName="classificationNumber"-->
+                           <!--maxlength="1">-->
+                <!--</mat-form-field>-->
+                <!--<mat-form-field class="example-full-width">-->
+                    <!--<mat-label>{{'i18n.SubfieldOfSpeciesNumber'|translate}}（$）-->
+                        <!--<span style="color: red">*</span>-->
+                    <!--</mat-label>-->
+                    <!--<input matInput [value]="form21.value.titleNumber" formControlName="titleNumber" maxlength="1">-->
+                <!--</mat-form-field>-->
+                <!--<mat-form-field class="example-full-width">-->
+                    <!--<mat-label>{{'i18n.CallNumberSubfield'|translate}}（$）-->
+                        <!--<span style="color: red">*</span>-->
+                    <!--</mat-label>-->
+                    <!--<input matInput [value]="form21.value.callNo" formControlName="callNo" maxlength="1">-->
+                <!--</mat-form-field>-->
+                <!--&lt;!&ndash;<mat-form-field class="example-full-width">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<mat-checkbox [value]="form.value.Publishedyear" formControlName="Publishedyear">出版年</mat-checkbox>&ndash;&gt;-->
+                <!--&lt;!&ndash;</mat-form-field>&ndash;&gt;-->
+            <!--</mat-card-content>-->
+            <!--<button style="margin-right: 10px;" mat-raised-button color="primary" (click)="saved()" [disabled]="!hasApiResult || loading"-->
+            <!--&gt;{{'i18n.save'|translate}}</button>-->
+            <!--&lt;!&ndash;<div>&ndash;&gt;-->
+                <!--<button style="margin-right: 10px" mat-raised-button color="primary" (click)="setSettings(true)"-->
+                        <!--[disabled]="!hasApiResult || loading"-->
+                <!--&gt;{{'i18n.Update1'|translate}}</button>-->
+                <!--<button mat-raised-button color="primary" (click)="setSettings(false)" [disabled]="!hasApiResult || loading"-->
+                <!--&gt;{{'i18n.Rebuild1'|translate}}</button>-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--</mat-card>-->
+    <!--</form>-->
+    <!--<div *ngIf="!hasApiResult">-->
+        <!--<h1 class="tip">{{'i18n.NoCNATip'|translate}}</h1>-->
+    <!--</div>-->
 </section>
 

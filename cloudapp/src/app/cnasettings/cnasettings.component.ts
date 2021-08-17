@@ -24,6 +24,8 @@ export class CnaSettingsComponent implements OnInit, OnDestroy {
     form: FormGroup;
     form21:FormGroup;
 
+    favoriteSeason: string;
+    seasons: string[] = ['MARC21', 'CNMARC'];
     private pageLoad$: Subscription;
     pageEntities: Entity[];
     private _apiResult: any;
@@ -76,12 +78,12 @@ export class CnaSettingsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.pageLoad$ = this.eventsService.onPageLoad(this.onPageLoad);
+        // this.pageLoad$ = this.eventsService.onPageLoad(this.onPageLoad);
         this.getSettings()
     }
 
     ngOnDestroy(): void {
-        this.pageLoad$.unsubscribe();
+        // this.pageLoad$.unsubscribe();
     }
 
     get apiResult() {
@@ -119,23 +121,33 @@ export class CnaSettingsComponent implements OnInit, OnDestroy {
     }
 
     saved() {
-        if(!this.ifCNor21){
-            if (this.form.value.holding && this.form.value.classificationNumber && this.form.value.titleNumber && this.form.value.callNo) {
-                this.setconfig();
-                this.alert.success(this.translate.instant('i18n.savedate'));
-            } else {
-                this.alert.error(this.translate.instant('i18n.errortip'), {autoClose: true, delay: 3000});
-                this.setDefaultValue(this.form.value);
-            }
-        }else{
-            if (this.form21.value.holding && this.form21.value.classificationNumber && this.form21.value.titleNumber && this.form21.value.callNo) {
-                this.setconfig();
-                this.alert.success(this.translate.instant('i18n.savedate'));
-            } else {
-                this.alert.error(this.translate.instant('i18n.errortip'), {autoClose: true, delay: 3000});
-                this.setDefaultValue(this.form21.value);
-            }
-        }
+        this.settingsService.set(this.favoriteSeason).subscribe(
+            response => {
+                // console.log(response)
+                this.alert.success('保存成功')
+                // this.form.markAsPristine();
+                // this.updateBib(this.apiResult)
+            },
+            // err => this.alert.error(err.message),
+            // ()  => this.saving = false
+        );
+        // if(!this.ifCNor21){
+        //     if (this.form.value.holding && this.form.value.classificationNumber && this.form.value.titleNumber && this.form.value.callNo) {
+        //         this.setconfig();
+        //         this.alert.success(this.translate.instant('i18n.savedate'));
+        //     } else {
+        //         this.alert.error(this.translate.instant('i18n.errortip'), {autoClose: true, delay: 3000});
+        //         this.setDefaultValue(this.form.value);
+        //     }
+        // }else{
+        //     if (this.form21.value.holding && this.form21.value.classificationNumber && this.form21.value.titleNumber && this.form21.value.callNo) {
+        //         this.setconfig();
+        //         this.alert.success(this.translate.instant('i18n.savedate'));
+        //     } else {
+        //         this.alert.error(this.translate.instant('i18n.errortip'), {autoClose: true, delay: 3000});
+        //         this.setDefaultValue(this.form21.value);
+        //     }
+        // }
     }
 
     setSettings(value: any) {
@@ -159,21 +171,23 @@ export class CnaSettingsComponent implements OnInit, OnDestroy {
 
     getSettings() {
         this.settingsService.get().subscribe(settings => {
-            if(settings){
-                if(settings.cnmarc){
-                    this.form = FormGroupUtil.toFormGroup(Object.assign(new Cnmarc(), settings.cnmarc))
-                }else{
-                    this.form = FormGroupUtil.toFormGroup(Object.assign(new Cnmarc(), this.models.cnmarc))
-                }
-                if(settings.marc21){
-                    this.form21 = FormGroupUtil.toFormGroup(Object.assign(new Marc21(), settings.marc21))
-                }else{
-                    this.form21 = FormGroupUtil.toFormGroup(Object.assign(new Marc21(), this.models.marc21))
-                }
-            }else{
-                this.form = FormGroupUtil.toFormGroup(Object.assign(new Cnmarc(), this.models.cnmarc))
-                this.form21 = FormGroupUtil.toFormGroup(Object.assign(new Marc21(), this.models.marc21))
-            }
+            console.log(settings)
+            this.favoriteSeason = settings
+            // if(settings){
+            //     if(settings.cnmarc){
+            //         this.form = FormGroupUtil.toFormGroup(Object.assign(new Cnmarc(), settings.cnmarc))
+            //     }else{
+            //         this.form = FormGroupUtil.toFormGroup(Object.assign(new Cnmarc(), this.models.cnmarc))
+            //     }
+            //     if(settings.marc21){
+            //         this.form21 = FormGroupUtil.toFormGroup(Object.assign(new Marc21(), settings.marc21))
+            //     }else{
+            //         this.form21 = FormGroupUtil.toFormGroup(Object.assign(new Marc21(), this.models.marc21))
+            //     }
+            // }else{
+            //     this.form = FormGroupUtil.toFormGroup(Object.assign(new Cnmarc(), this.models.cnmarc))
+            //     this.form21 = FormGroupUtil.toFormGroup(Object.assign(new Marc21(), this.models.marc21))
+            // }
 
         });
     }

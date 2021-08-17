@@ -47,6 +47,7 @@ export class PolInfo {
     renewal_period:any = 0;
     renewal_note:String = "";
     material_type:any = {"value":"BOOK","desc":"图书"};
+
 }
 
 

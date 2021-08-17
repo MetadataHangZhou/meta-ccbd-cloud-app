@@ -40,18 +40,23 @@ export class BookdetailComponent implements OnInit, OnDestroy {
     metadata:any;
     showLargePic = false;
     mmsid = '';
+    recordformat:string;
 
     constructor(private restService: CloudAppRestService,
                 private eventsService: CloudAppEventsService,
                 private router: Router,
                 private activatedRoute: ActivatedRoute,
                 private translate: TranslateService,
+                private settingsService: CloudAppSettingsService,
                 private http: HttpClient,
                 private fb: FormBuilder,
                 private alert: AlertService) {
     }
 
     ngOnInit() {
+        this.settingsService.get().subscribe(settings => {
+            this.recordformat = settings
+        });
         this.eventsService.getInitData().subscribe(data=> {
             this.libcode = data.instCode
             this.activatedRoute.queryParams.subscribe(param => {
@@ -126,7 +131,7 @@ export class BookdetailComponent implements OnInit, OnDestroy {
             "libcode": this.libcode,
             "value": value
         }
-        let jsons = `apikey=${json.apikey}&libcode=${json.libcode}&cckbid=${json.value}`
+        let jsons = `apikey=${json.apikey}&libcode=${json.libcode}&cckbid=${json.value}&marctype=${this.recordformat}`
         return new Promise((resolve, reject) => {
             this.eventsService.getAuthToken().subscribe(
                 data => {
@@ -171,46 +176,39 @@ export class BookdetailComponent implements OnInit, OnDestroy {
     updatebid(){
         // this.router.navigate(['/cnasettings'])
         //更新bib
-        this.eventsService.getAuthToken().subscribe(
-            data => {
-                this.http.get(`https://api.exldevnetwork.net.cn/proxy/sru/sruMarc_marc21?operation=searchRetrieve&recordSchema=marcxml&version=1.2&startRecord=1&maximumRecords=10&query=isbn+%3D+"9787305232459"+`, {
-                    headers: {
-                        'X-Proxy-Host': 'https://cckb.lib.tsinghua.edu.cn',
-                        'Authorization': 'Bearer ' + data
-                    }
-                }).subscribe(res=>{
-                    console.log(res)
 
-                    // const doc = new DOMParser().parseFromString(value, "application/xml");
-                    // let recordData = doc.getElementsByTagName("recordData")[0].innerHTML
-                    // console.log(recordData)
-
-                })
+        let request: Request = {
+            url: `/almaws/v1/bibs/${this.mmsid}`,
+            method: HttpMethod.PUT,
+            headers: {
+                "Content-Type": "application/xml",
+                Accept: "application/json"
+            },
+            requestBody: this.bookInfo.marcxmlstr,
+        };
+        this.restService.call(request).subscribe({
+            next: result => {
+                // console.log(result)
+                this.refreshPage();
+            },
+            error: (e: RestErrorResponse) => {
+                // this.alert.error(this.translate.instant('i18n.errorupdate'), {autoClose: true, delay: 3000});
+                // console.error(e);
+                // this.loading = false;
             }
-        );
+        });
 
-        // let request: Request = {
-        //     url: `/almaws/v1/bibs/${this.mmsid}`,
-        //     method: HttpMethod.PUT,
-        //     headers: {
-        //         "Content-Type": "application/xml",
-        //         Accept: "application/json"
-        //     },
-        //     requestBody: `<bib>${anies}</bib>`,
-        // };
-        // this.restService.call(request).subscribe({
-        //     next: result => {
-        //
-        //     },
-        //     error: (e: RestErrorResponse) => {
-        //         // this.alert.error(this.translate.instant('i18n.errorupdate'), {autoClose: true, delay: 3000});
-        //         // console.error(e);
-        //         // this.loading = false;
-        //     }
-        // });
+    }
 
-
-
+    refreshPage = () => {
+        // this.loading = true;
+        this.eventsService.refreshPage().subscribe({
+            next: () => this.alert.success('Success!'),
+            error: e => {
+                this.alert.error(this.translate.instant('i18n.errorrefreshpage'), {autoClose: true, delay: 3000});
+            },
+            complete: () => this.loading = false
+        });
     }
 
     imgerror(e){
