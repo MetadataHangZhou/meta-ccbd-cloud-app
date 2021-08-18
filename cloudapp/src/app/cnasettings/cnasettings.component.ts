@@ -24,7 +24,7 @@ export class CnaSettingsComponent implements OnInit, OnDestroy {
     form: FormGroup;
     form21:FormGroup;
 
-    favoriteSeason: string;
+    favoriteSeason :string;
     seasons: string[] = ['MARC21', 'CNMARC'];
     private pageLoad$: Subscription;
     pageEntities: Entity[];
@@ -124,7 +124,7 @@ export class CnaSettingsComponent implements OnInit, OnDestroy {
         this.settingsService.set(this.favoriteSeason).subscribe(
             response => {
                 // console.log(response)
-                this.alert.success('保存成功')
+                this.alert.success(this.translate.instant('i18n.savedate'))
                 // this.form.markAsPristine();
                 // this.updateBib(this.apiResult)
             },
@@ -171,8 +171,11 @@ export class CnaSettingsComponent implements OnInit, OnDestroy {
 
     getSettings() {
         this.settingsService.get().subscribe(settings => {
-            console.log(settings)
-            this.favoriteSeason = settings
+            if(settings){
+                this.favoriteSeason = settings
+            }else{
+                this.favoriteSeason = 'MARC21'
+            }
             // if(settings){
             //     if(settings.cnmarc){
             //         this.form = FormGroupUtil.toFormGroup(Object.assign(new Cnmarc(), settings.cnmarc))

@@ -225,7 +225,7 @@ export class PolSettingsComponent implements OnInit, OnDestroy {
             requestBody.owner.value = this.ownsValues
             requestBody.owner.desc = this.ownsDesc
         }else{
-            this.alert.error('请完善订购分馆信息',{autoClose:true,delay:6000});
+            this.alert.error(this.translate.instant('i18n.errortip1'),{autoClose:true,delay:6000});
             return
         }
 

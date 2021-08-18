@@ -44,7 +44,7 @@
         <div class="book-longer-info">
             <div class="tabs-box">
                 <div [ngClass]="{'tab':tabIndex != 0,'tabactive':tabIndex === 0}" (click)="chooseTabs(0)" >{{'i18n.abstract'|translate}}</div>
-                <div [ngClass]="{'tab':tabIndex != 1,'tabactive':tabIndex === 1}" (click)="chooseTabs(1)">marc21</div>
+                <div [ngClass]="{'tab':tabIndex != 1,'tabactive':tabIndex === 1}" (click)="chooseTabs(1)"><span *ngIf="recordformat == 'MARC21'">MARC21</span><span *ngIf="recordformat == 'CNMARC'">CNMARC</span></div>
                 <div [ngClass]="{'tab':tabIndex != 2,'tabactive':tabIndex === 2}" (click)="chooseTabs(2)">{{'i18n.directory'|translate}}</div>
                 <div [ngClass]="{'tab':tabIndex != 3,'tabactive':tabIndex === 3}" (click)="chooseTabs(3)" >{{'i18n.authors'|translate}}</div>
             </div>
@@ -60,7 +60,7 @@
                 <button style="margin-right: 10px" mat-raised-button color="primary" (click)="createpol()"
                 >{{'i18n.Update'|translate}}</button>
                 <!--*ngIf="show"-->
-                <button style="margin-right: 10px" mat-raised-button color="primary" (click)="updatebid()" *ngIf="show"
+                <button style="margin-right: 10px" mat-raised-button color="primary" (click)="updatabidtip()" *ngIf="show"
                 >{{'i18n.Rebuild'|translate}}</button>
             </div>
             <div class="right">
@@ -117,8 +117,8 @@
                                 <div class="left">
                                     <button style="margin-right: 10px" mat-raised-button color="primary" (click)="createpol()"
                                     >{{'i18n.Update'|translate}}</button>
-                                    <!--<button style="margin-right: 10px" mat-raised-button color="primary" (click)="updatebid()" *ngIf="show"-->
-                                    <!--&gt;{{'i18n.Rebuild'|translate}}</button>-->
+                                    <button style="margin-right: 10px" mat-raised-button color="primary" (click)="updatabidtip()" *ngIf="show"
+                                    >{{'i18n.Rebuild'|translate}}</button>
                                 </div>
                                 <div class="right">
                                     <div class="buyinfo" style="margin-right: 10px" (click)="buypop()"><img src="../../assets/buycar_icon.png" /> </div>
@@ -128,7 +128,7 @@
                     </div>
                 </div>
                 <div style="border-left: 1px solid #DBDBDB;padding-left: 50px;flex:1;">
-                    <h1>Marc21</h1>
+                    <div style="font-size: 20px;font-weight: bold;margin-bottom: 10px"><span *ngIf="recordformat == 'MARC21'">MARC21</span><span *ngIf="recordformat == 'CNMARC'">CNMARC</span></div>
                     <div style="line-height: 25px;font-size: 13px;" [innerHTML]="cfmarcstr?cfmarcstr:''"></div>
                 </div>
             </div>

@@ -48,7 +48,7 @@
     "Fund": "经费",
     "UpdateSuccess": "已生成新的订单行POL [{{number}}]!",
     "UpdateConfirm": "是否创建新的订单行?",
-
+    "updateConfirmbibs": "是否更新MARC?",
     "maintip1": "浏览到一条书目记录显示详情",
     "maintip2": "关键词检索",
     "maintip3": "扩展窗口浏览更多",
@@ -77,6 +77,7 @@
     "owns": "订购单位",
     "librarys": "图书馆",
     "notes": "备注",
-    "createbt":"创建"
+    "createbt":"创建",
+    "errortip1": "请完善订购分馆信息"
   }
 }

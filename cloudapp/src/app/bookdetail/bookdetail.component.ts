@@ -55,16 +55,24 @@ export class BookdetailComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.settingsService.get().subscribe(settings => {
-            this.recordformat = settings
+            if(settings){
+                this.recordformat = settings
+            }else{
+                this.recordformat = 'MARC21'
+            }
         });
         this.eventsService.getInitData().subscribe(data=> {
             this.libcode = data.instCode
             this.activatedRoute.queryParams.subscribe(param => {
                 this.getCCKBbookdetail(param.id).then((res: any) => {
                     this.loading = false;
-                    if(res.almalist.marc21str){
+                    if(res.almalist.marc21str && this.recordformat == 'MARC21'){
                         var reg = new RegExp( 'src="images/bluemarc.png"' , "g" )
                         var newstr = res.almalist.marc21str.replace( reg , `src='../../assets/blue.png'` );
+                        this.cfmarcstr = newstr
+                    }else if(res.almalist.calismarcstr && this.recordformat == 'CNMARC'){
+                        var reg = new RegExp( 'src="images/bluemarc.png"' , "g" )
+                        var newstr = res.almalist.calismarcstr.replace( reg , `src='../../assets/blue.png'` );
                         this.cfmarcstr = newstr
                     }
                     this.bookInfo = res.almalist
@@ -171,6 +179,13 @@ export class BookdetailComponent implements OnInit, OnDestroy {
         info.price.sum = this.bookInfo.bookprice
 
         this.router.navigate(['/polsettings'],{queryParams:{info:JSON.stringify(info)}})
+    }
+
+    updatabidtip(){
+        if(window.confirm(this.translate.instant('i18n.updateConfirmbibs'))) {
+            // this.loading = true;
+            this.updatebid();
+        }
     }
 
     updatebid(){

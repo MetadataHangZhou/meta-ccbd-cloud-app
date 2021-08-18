@@ -47,8 +47,8 @@
     "Vendor": "Vendor",
     "Fund": "Fund",
     "UpdateSuccess": "Update success，create new POL [ {{number}} ]!",
-    "UpdateConfirm": "Do you want to cancel Current POLINE,and create a new POLine?",
-
+    "UpdateConfirm": "Do you want to create a new POLine?",
+    "updateConfirmbibs": "Do you want to update MARC?",
     "maintip1": "Browse to a book record showing details",
     "maintip2": "Keyword retrieval",
     "maintip3": "Extension window to browse more",
@@ -77,6 +77,7 @@
     "owns": "Order units",
     "librarys": "Library",
     "notes": "Notes",
-    "createbt":"Create"
+    "createbt":"Create",
+    "errortip1": "Please complete the branch library information"
   }
 }
