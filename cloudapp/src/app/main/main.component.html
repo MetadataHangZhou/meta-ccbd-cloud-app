@@ -4,7 +4,7 @@
             {{'i18n.tip'|translate}}
         </h1>
     </section>
-    <ul>
+    <ul *ngIf="!boxSize">
         <li>{{'i18n.maintip1'|translate}}</li>
         <li>{{'i18n.maintip2'|translate}}</li>
         <li>{{'i18n.maintip3'|translate}}</li>
@@ -13,7 +13,22 @@
     <!--<meta name="referrer" content="no-referrer">-->
 
     <div class="small-box-content" *ngIf="!boxSize && !loading">
-        <div class="input-group-btn">
+        <div class="box-left-booktype" style="display: flex;justify-content: center;align-content: center;margin-bottom: 10px">
+            <!--<span style="display: flex;align-items:center;width: 80px">{{'i18n.booklists'| translate}}：</span>-->
+            <div style="display: flex;width:95%;
+                                     border: 1px solid #C2C2C2;padding: 7px;">
+                <select class="drop-select" id="select-booktypes" [(ngModel)]="booktypes"
+                         (change)="searchtype()">
+                    <option [value]='0' > {{'i18n.booktypeall'|translate}}</option>
+                    <option *ngFor="let types of almabooktypes"
+                            [value]="types.id">
+                        <span *ngIf="lang">{{types.chiname }}</span>
+                        <span *ngIf="!lang">{{types.engname }}</span>
+                    </option>
+                    <!--<option *ngFor="let types of almabooktypes"-->
+                    <!--[value]="types.id" *ngIf="!lang"> {{types.chiname }}</option>-->
+                </select>
+            </div>
         </div>
         <div class="search-box" style="display: flex;align-items: center;">
             <div style="display: flex;width:75%;border: 1px solid #C2C2C2;padding: 7px;">
@@ -29,7 +44,7 @@
             <button mat-raised-button (click)="search()" color="primary"
                     style="margin-left: 10px">
                 <!--{{'i18n.searchbt'|translate}}-->
-                <img src="../../assets/search_icon.png">
+                <img src="/assets/search_icon.png">
             </button>
         </div>
         <div class="search-total" style="margin-top: 10px">检索到：{{totals}}</div>
@@ -120,12 +135,12 @@
                     <div class="search-tips">
                         <div class="flexBoxStartTop">
                             <div class="box-left-booktype" style="display: flex;justify-content: center;align-content: center">
-                                <span style="display: flex;align-items:center;width: 100px">{{'i18n.booklists'| translate}}：</span>
+                                <!--<span style="display: flex;align-items:center;width: 100px">{{'i18n.booklists'| translate}}：</span>-->
                                 <div style="display: flex;width:100%;
                                      border: 1px solid #C2C2C2;padding: 7px;">
                                     <select class="drop-select" id="select-booktype" [(ngModel)]="booktypes"
                                             style="width: 300px" (change)="searchtype()">
-                                        <option [value]='0' > {{'i18n.all'|translate}}</option>
+                                        <option [value]='0' > {{'i18n.booktypeall'|translate}}</option>
                                         <option *ngFor="let types of almabooktypes"
                                                 [value]="types.id">
                                             <span *ngIf="lang">{{types.chiname }}</span>
@@ -152,7 +167,7 @@
                                     </div>
                                     <button mat-raised-button (click)="search()" color="primary"
                                             style="margin-left: 10px;margin-right: 10px">
-                                        <img src="../../assets/search_icon.png">
+                                        <img src="/assets/search_icon.png">
                                         <!--{{'i18n.searchbt'|translate}}-->
                                     </button>
                                 </div>

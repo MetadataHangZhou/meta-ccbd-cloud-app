@@ -42,7 +42,7 @@ export class MainComponent implements OnInit, OnDestroy {
     totals:any;
     private sortOnMark = '';
     private apikey = "562930543E3E090957C595704CF28BE4";
-    private libcode:any;
+    libcode:any;
     lang:boolean = false;
 
     constructor(
@@ -188,7 +188,7 @@ export class MainComponent implements OnInit, OnDestroy {
     }
 
     imgerror(e) {
-        const defaultImg = '../../assets/fm_img.png';
+        const defaultImg = '/assets/fm_img.png';
         e.srcElement.src = defaultImg;
     }
 
@@ -205,16 +205,38 @@ export class MainComponent implements OnInit, OnDestroy {
     }
 
     getCCKBbooklist(value: String) {
+        let field;
+        if(this.boxSize){
+            // field = `[{"key":"${this.types}","value":"${value}"},
+            //     {"key":"publish","value":"${this.publish}",
+            //     {"key":"publishyear","value":"${this.publishyear}"
+            // ]`
+            let fieldlist = []
+            if(value){
+                let item = {"key":`${this.types}`,"value":`${value}`}
+                fieldlist.push(item)
+            }
+            if(this.publish){
+                let item = {"key":"publish","value":`${this.publish}`}
+                fieldlist.push(item)
+            }
+
+            if(this.publishyear){
+                let item = {"key":"publishyear","value":`${this.publishyear}`}
+                fieldlist.push(item)
+            }
+
+            field = JSON.stringify(fieldlist)
+
+        }else{
+            field = `[{"key":"${this.types}","value":"${value}"}]`
+        }
         let json = {
             "apikey": '562930543E3E090957C595704CF28BE4',
             "libcode": this.libcode,
             "pagesize": this.pagesize,
             "pagenum": this.pagenum,
-            "field":
-                `[
-                {"key":"${this.types}","value":"${value}"}
-                {"key":"publishyear","value":"${this.publishyear}"}
-                ]`,
+            "field": field,
             "booktype": this.booktypes,//书单id
         }
         let jsons = encodeURI(`apikey=${json.apikey}&libcode=${json.libcode}&pagesize=${json.pagesize}&pagenum=${json.pagenum}&booktype=${json.booktype}&searcharray=${json.field}`)
@@ -302,9 +324,7 @@ export class MainComponent implements OnInit, OnDestroy {
     }
 
     searchpublish(publish:any){
-        this.types = 'publish'
         this.publish = publish
-        this.values = publish
         this.search()
     }
 
@@ -349,9 +369,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
     close(value:any){
         if(value === 1){
-            this.types = 'all'
             this.publish = ''
-            this.values = ''
         }else{
             this.publishyear = ''
         }

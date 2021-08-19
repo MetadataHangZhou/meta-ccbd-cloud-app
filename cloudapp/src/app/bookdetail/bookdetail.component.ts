@@ -36,7 +36,7 @@ export class BookdetailComponent implements OnInit, OnDestroy {
     loading = true;
     tabIndex = 0;
     isShowInfo = false;
-    libcode = "233030";
+    libcode :any;
     metadata:any;
     showLargePic = false;
     mmsid = '';
@@ -68,11 +68,11 @@ export class BookdetailComponent implements OnInit, OnDestroy {
                     this.loading = false;
                     if(res.almalist.marc21str && this.recordformat == 'MARC21'){
                         var reg = new RegExp( 'src="images/bluemarc.png"' , "g" )
-                        var newstr = res.almalist.marc21str.replace( reg , `src='../../assets/blue.png'` );
+                        var newstr = res.almalist.marc21str.replace( reg , `src='/assets/blue.png'` );
                         this.cfmarcstr = newstr
                     }else if(res.almalist.calismarcstr && this.recordformat == 'CNMARC'){
                         var reg = new RegExp( 'src="images/bluemarc.png"' , "g" )
-                        var newstr = res.almalist.calismarcstr.replace( reg , `src='../../assets/blue.png'` );
+                        var newstr = res.almalist.calismarcstr.replace( reg , `src='/assets/blue.png'` );
                         this.cfmarcstr = newstr
                     }
                     this.bookInfo = res.almalist
@@ -227,7 +227,7 @@ export class BookdetailComponent implements OnInit, OnDestroy {
     }
 
     imgerror(e){
-        const defaultImg = '../../assets/fm_img.png';
+        const defaultImg = '/assets/fm_img.png';
         e.srcElement.src = defaultImg;
     }
 
