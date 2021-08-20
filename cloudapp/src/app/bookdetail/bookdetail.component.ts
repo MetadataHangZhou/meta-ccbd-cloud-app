@@ -135,7 +135,7 @@ export class BookdetailComponent implements OnInit, OnDestroy {
 
     getCCKBbookdetail(value: any) {
         let json = {
-            "apikey": '562930543E3E090957C595704CF28BE4',
+            "apikey": 'C1E4D4AE9734F16DBE01FE331C893E97',
             "libcode": this.libcode,
             "value": value
         }

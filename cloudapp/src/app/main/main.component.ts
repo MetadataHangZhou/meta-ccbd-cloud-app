@@ -41,7 +41,7 @@ export class MainComponent implements OnInit, OnDestroy {
     pagesize = 16;
     totals:any;
     private sortOnMark = '';
-    private apikey = "562930543E3E090957C595704CF28BE4";
+    private apikey = "C1E4D4AE9734F16DBE01FE331C893E97";
     libcode:any;
     lang:boolean = false;
 
@@ -232,7 +232,7 @@ export class MainComponent implements OnInit, OnDestroy {
             field = `[{"key":"${this.types}","value":"${value}"}]`
         }
         let json = {
-            "apikey": '562930543E3E090957C595704CF28BE4',
+            "apikey": 'C1E4D4AE9734F16DBE01FE331C893E97',
             "libcode": this.libcode,
             "pagesize": this.pagesize,
             "pagenum": this.pagenum,
@@ -289,7 +289,7 @@ export class MainComponent implements OnInit, OnDestroy {
         return new Promise((resolve, reject) => {
             this.eventsService.getAuthToken().subscribe(
                 data => {
-                    this.http.get(`https://api.exldevnetwork.net.cn/proxy/cckbapi/almaBooktype?apikey=562930543E3E090957C595704CF28BE4`, {
+                    this.http.get(`https://api.exldevnetwork.net.cn/proxy/cckbapi/almaBooktype?apikey=C1E4D4AE9734F16DBE01FE331C893E97`, {
                         headers: {
                             'X-Proxy-Host': 'https://cckb.lib.tsinghua.edu.cn',
                             'Authorization': 'Bearer ' + data
