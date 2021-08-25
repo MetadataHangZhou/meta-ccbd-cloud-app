@@ -55,10 +55,10 @@ export class BookdetailComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.settingsService.get().subscribe(settings => {
-            if(settings){
-                this.recordformat = settings
-            }else{
+            if(!settings){
                 this.recordformat = 'MARC21'
+            }else{
+                this.recordformat = settings
             }
         });
         this.eventsService.getInitData().subscribe(data=> {
@@ -139,6 +139,11 @@ export class BookdetailComponent implements OnInit, OnDestroy {
             "apikey": 'C1E4D4AE9734F16DBE01FE331C893E97',
             "libcode": this.libcode,
             "value": value
+        }
+        // console.log(JSON.stringify(this.recordformat) === '{}')
+        // console.log(Object.keys(this.recordformat).length===0)
+        if(Object.keys(this.recordformat).length===0){
+            this.recordformat = 'MARC21'
         }
         let jsons = `apikey=${json.apikey}&libcode=${json.libcode}&cckbid=${json.value}&marctype=${this.recordformat}`
         return new Promise((resolve, reject) => {
