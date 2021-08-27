@@ -27,6 +27,8 @@
                     </div>
                     <div class="bookInfoList"><span class="title">{{'i18n.classnum'|translate}}：</span><span class="content">{{bookInfo.sortvalue?bookInfo.sortvalue:'-'}}</span>
                     </div>
+                    <div class="bookInfoList"><span class="title">{{'i18n.bookprice'|translate}}：</span><span class="content">￥{{bookInfo.bookprice?bookInfo.bookprice:'-'}}</span>
+                    </div>
                     <!--<div class="bookInfoList"><span class="title">分页：</span><span class="content">{{bookInfo.pagenum?bookInfo.pagenum:'-'}}</span>-->
                     <!--</div>-->
                     <!--<div class="bookInfoList"><span class="title">开本：</span><span class="content">{{bookInfo.booksize?bookInfo.booksize:'-'}}</span>-->
@@ -110,6 +112,8 @@
                                 </div>
                                 <div class="bookInfoList"><span class="title">{{'i18n.pages'|translate}}：</span><span class="content">{{bookInfo.pagenum?bookInfo.pagenum:'-'}}</span>
                                 </div>
+                                <div class="bookInfoList"><span class="title">{{'i18n.bookprice'|translate}}：</span><span class="content">￥{{bookInfo.bookprice?bookInfo.bookprice:'-'}}</span>
+                                </div>
                             </div>
                         </div>
                         <section>
@@ -120,7 +124,7 @@
                                     <button style="margin-right: 10px" mat-raised-button color="primary" (click)="updatabidtip()" *ngIf="show"
                                     >{{'i18n.Rebuild'|translate}}</button>
                                 </div>
-                                <div class="right">
+                                <div class="right" style="padding-top: 5px">
                                     <div class="buyinfo" style="margin-right: 10px;padding:5px 10px;border:#1A5E1E solid 1px;border-radius: 15% " (click)="buypop()">info</div>
                                 </div>
                             </div>

@@ -164,7 +164,8 @@ export class BookdetailComponent implements OnInit, OnDestroy {
         })
     }
     showConfig(){
-        history.back()
+        // history.back()
+        this.router.navigate(['/'])
     }
 
     createpol(){
