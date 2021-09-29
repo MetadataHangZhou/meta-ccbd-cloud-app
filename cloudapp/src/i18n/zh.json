@@ -79,6 +79,8 @@
     "librarys": "图书馆",
     "notes": "备注",
     "createbt":"创建",
-    "errortip1": "请完善订购分馆信息"
+    "errortip1": "请完善订购分馆信息",
+
+    "helpdoc": "帮助文档"
   }
 }

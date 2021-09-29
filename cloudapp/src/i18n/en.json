@@ -80,6 +80,8 @@
     "librarys": "Library",
     "notes": "Notes",
     "createbt":"Create",
-    "errortip1": "Please complete the branch library information"
+    "errortip1": "Please complete the branch library information",
+
+    "helpdoc": "Help document"
   }
 }
