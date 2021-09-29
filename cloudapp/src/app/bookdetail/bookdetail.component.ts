@@ -214,7 +214,7 @@ export class BookdetailComponent implements OnInit, OnDestroy {
                 this.refreshPage();
             },
             error: (e: RestErrorResponse) => {
-                // this.alert.error(this.translate.instant('i18n.errorupdate'), {autoClose: true, delay: 3000});
+                this.alert.error('请求失败：Updating record_format is currently not supported.', {autoClose: true, delay: 3000});
                 // console.error(e);
                 // this.loading = false;
             }
