@@ -126,6 +126,7 @@ export class CnaSettingsComponent implements OnInit, OnDestroy {
                 // console.log(response)
                 this.alert.success(this.translate.instant('i18n.savedate'))
                 // this.form.markAsPristine();
+                // this.form.updateValueAndValidity()
                 // this.updateBib(this.apiResult)
             },
             // err => this.alert.error(err.message),
